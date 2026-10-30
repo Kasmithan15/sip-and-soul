@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --color-espresso: #1e120c;
+  --color-roast: #2b1a12;
+  --color-brown: #3a2418;
+  --color-mocha: #6b4a35;
+  --color-latte: #6f5d50;
+  --color-gold: #d9b48a;
+  --color-gold-light: #e8cfae;
+  --color-cream: #f3ece3;
+  --color-cream-2: #ede3d6;
+  --color-line: #ddd0c0;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-script: "Great Vibes", cursive;
+
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-letter-in: letter-in 0.4s var(--ease-smooth) forwards;
+  --animate-flip-in: flip-in 0.6s var(--ease-smooth);
+  --animate-wobble: wobble 5s ease-in-out infinite;
+  --animate-sway: sway 7s ease-in-out infinite;
+  --animate-bump: bump 0.5s var(--ease-smooth);
+  --animate-added: added 0.6s var(--ease-smooth);
+
+  @keyframes letter-in {
+    from { opacity: 0; transform: perspective(600px) rotateX(-90deg) translateY(30px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes flip-in {
+    from { opacity: 0; transform: rotateX(-80deg) translateY(10px); }
+  }
+  @keyframes wobble { 50% { transform: rotate(20deg) scale(1.08); } }
+  @keyframes sway { 50% { transform: rotate(8deg); } }
+  @keyframes bump { 50% { transform: scale(1.6); background: var(--color-gold); } }
+  @keyframes added { 40% { transform: scale(0.8) rotate(-12deg); } 100% { transform: scale(1); } }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-cream font-sans text-brown overflow-x-hidden; }
+  button { cursor: pointer; }
+}
+
+/* Fades the hero's 3D scene into the page: from the top (so falling beans don't cross the header)
+   and, on desktop, from the left edge where it meets the text. */
+.hero-canvas-fade {
+  mask-image: linear-gradient(to bottom, transparent, #000 16%);
+}
+@media (min-width: 1024px) {
+  .hero-canvas-fade {
+    mask-image: linear-gradient(to right, transparent, #000 18%), linear-gradient(to bottom, transparent, #000 16%);
+    mask-composite: intersect;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
