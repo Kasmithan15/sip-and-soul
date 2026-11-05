@@ -1,4 +1,6 @@
-import { Body, Controller, Get, HttpCode, Patch, Post, Res, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Patch, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { sniffImage } from '../images/sniff.js';
 import { Throttle } from '@nestjs/throttler';
 import type { CookieOptions, Response } from 'express';
 import { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from './auth.dto.js';
@@ -59,6 +61,24 @@ export class AuthController {
   @SignedIn()
   update(@CurrentUser() user: SessionUser, @Body() input: UpdateProfileDto) {
     return this.auth.updateProfile(user.id, input);
+  }
+
+  /** Profile photo for the signed-in customer or admin: a real JPG, PNG or WebP of 2 MB or less. */
+  @Post('me/avatar')
+  @SignedIn()
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 2 * 1024 * 1024, files: 1 } }))
+  async avatar(@CurrentUser() user: SessionUser, @UploadedFile() file?: { buffer: Buffer }) {
+    if (!file) throw new BadRequestException('Choose a photo (JPG, PNG or WebP, up to 2 MB).');
+    const mimeType = sniffImage(file.buffer);
+    if (!mimeType) throw new BadRequestException('Only JPG, PNG or WebP photos can be used.');
+    return this.auth.setAvatar(user.id, file.buffer, mimeType);
+  }
+
+  @Delete('me/avatar')
+  @SignedIn()
+  removeAvatar(@CurrentUser() user: SessionUser) {
+    return this.auth.removeAvatar(user.id);
   }
 
   @Post('password')

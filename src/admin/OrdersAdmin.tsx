@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Avatar } from '../components/shop/ui'
 import { api, ApiError } from '../lib/api'
 import { STATUS_LABEL, STATUS_STYLE, type Order, type OrderStatus } from '../lib/types'
 import { useStore } from '../state/store'
@@ -57,9 +58,12 @@ export function OrdersAdmin() {
           {shown.map((o) => (
             <article key={o.id} className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+                <div className="flex items-center gap-3">
+                  <Avatar name={o.user?.name ?? '?'} src={o.user?.avatar} size={44} />
+                  <div>
                   <p className="font-display text-2xl font-[800] tracking-tight text-espresso">#{o.number} · {o.user?.name}</p>
                   <p className="text-xs text-latte">{new Date(o.createdAt).toLocaleString()} · {o.user?.email}</p>
+                  </div>
                 </div>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLE[o.status]}`}>{STATUS_LABEL[o.status]}</span>
               </div>

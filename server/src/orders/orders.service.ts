@@ -5,7 +5,7 @@ import { ORDER_STATUSES, type CreateOrderDto, type UpdateOrderStatusDto } from '
 
 interface OrderItem { productId: string; name: string; price: number; quantity: number }
 
-const toOrder = (o: Order & { user?: { name: string; email: string } }) => ({ ...o, total: Number(o.total), items: o.items as unknown as OrderItem[] });
+const toOrder = (o: Order & { user?: { name: string; email: string; avatar: string | null } }) => ({ ...o, total: Number(o.total), items: o.items as unknown as OrderItem[] });
 
 // Which status an order may move to next; completed and cancelled are final.
 const NEXT: Record<string, string[]> = {
@@ -66,7 +66,7 @@ export class OrdersService {
       where: (ORDER_STATUSES as readonly string[]).includes(status ?? '') ? { status: status as Order['status'] } : {},
       orderBy: { createdAt: 'desc' },
       take: 200,
-      include: { user: { select: { name: true, email: true } } },
+      include: { user: { select: { name: true, email: true, avatar: true } } },
     });
     return rows.map(toOrder);
   }
@@ -77,7 +77,7 @@ export class OrdersService {
     if (order.status !== input.status && !NEXT[order.status].includes(input.status)) {
       throw new BadRequestException(`A ${order.status} order cannot be changed to ${input.status}.`);
     }
-    const updated = await this.prisma.order.update({ where: { id }, data: { status: input.status }, include: { user: { select: { name: true, email: true } } } });
+    const updated = await this.prisma.order.update({ where: { id }, data: { status: input.status }, include: { user: { select: { name: true, email: true, avatar: true } } } });
     return toOrder(updated);
   }
 

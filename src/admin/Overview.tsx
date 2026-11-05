@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Avatar } from '../components/shop/ui'
 import { api, ApiError } from '../lib/api'
 import { STATUS_LABEL, STATUS_STYLE, type Order } from '../lib/types'
 import { useStore } from '../state/store'
@@ -53,7 +54,7 @@ export function Overview({ go }: { go: (t: Tab) => void }) {
             {recent.map((o) => (
               <li key={o.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-3 text-sm">
                 <span className="w-14 font-display text-lg font-[800]">#{o.number}</span>
-                <span className="min-w-[140px] flex-1">{o.user?.name}</span>
+                <span className="flex min-w-[140px] flex-1 items-center gap-2.5"><Avatar name={o.user?.name ?? '?'} src={o.user?.avatar} size={30} />{o.user?.name}</span>
                 <span className="text-latte">{o.items.reduce((n, i) => n + i.quantity, 0)} items</span>
                 <span className="w-20 text-right font-medium">{money(o.total)}</span>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLE[o.status]}`}>{STATUS_LABEL[o.status]}</span>

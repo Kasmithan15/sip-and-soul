@@ -1,4 +1,4 @@
-export interface User { id: string; name: string; email: string; phone: string; role: 'customer' | 'admin'; createdAt: string }
+export interface User { id: string; name: string; email: string; phone: string; role: 'customer' | 'admin'; avatar: string | null; createdAt: string }
 
 export type Category = 'hot' | 'cold' | 'beans'
 export interface MenuItem { id: string; name: string; description: string; price: number; category: Category; image: string; available: boolean; featured: boolean; sortOrder: number }
@@ -7,7 +7,7 @@ export type OrderStatus = 'pending' | 'preparing' | 'ready' | 'completed' | 'can
 export interface OrderLine { productId: string; name: string; price: number; quantity: number }
 export interface Order {
   id: string; number: number; items: OrderLine[]; total: number; status: OrderStatus; type: 'pickup' | 'delivery'
-  phone: string; address: string; note: string; createdAt: string; user?: { name: string; email: string }
+  phone: string; address: string; note: string; createdAt: string; user?: { name: string; email: string; avatar: string | null }
 }
 
 export interface SiteContent {

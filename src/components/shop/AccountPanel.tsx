@@ -3,7 +3,7 @@ import { api, ApiError } from '../../lib/api'
 import { STATUS_LABEL, STATUS_STYLE, type Order, type User } from '../../lib/types'
 import { hasErrors, rules } from '../../lib/validate'
 import { useStore } from '../../state/store'
-import { Alert, Field, Modal, PasswordField, Submit } from './ui'
+import { Alert, Avatar, Field, Modal, PasswordField, Submit } from './ui'
 
 const STEPS: Order['status'][] = ['pending', 'preparing', 'ready', 'completed']
 
@@ -62,7 +62,57 @@ function Orders() {
   )
 }
 
-function Profile() {
+const PHOTO_MAX_MB = 2
+
+/** Upload, change or remove the profile photo. Checks type and size before uploading. */
+function PhotoPicker() {
+  const { user, setUser } = useStore()
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  if (!user) return null
+
+  async function upload(file: File) {
+    setError('')
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return setError('Choose a JPG, PNG or WebP photo.')
+    if (file.size > PHOTO_MAX_MB * 1024 * 1024) return setError(`The photo must be ${PHOTO_MAX_MB} MB or smaller.`)
+    setBusy(true)
+    try {
+      const body = new FormData()
+      body.append('file', file)
+      setUser(await api<User>('/auth/me/avatar', { method: 'POST', body }))
+    } catch (e) {
+      setError((e as ApiError).message)
+    } finally {
+      setBusy(false)
+    }
+  }
+  async function remove() {
+    if (!confirm('Remove your profile photo?')) return
+    setBusy(true)
+    try { setUser(await api<User>('/auth/me/avatar', { method: 'DELETE' })) } catch (e) { setError((e as ApiError).message) } finally { setBusy(false) }
+  }
+
+  return (
+    <div className="flex items-center gap-5">
+      <div className="relative">
+        <Avatar name={user.name} src={user.avatar} size={84} className="ring-4 ring-white shadow-[0_10px_24px_rgba(43,29,22,.15)]" />
+        {busy && <span className="absolute inset-0 grid place-items-center rounded-full bg-espresso/40"><span className="size-6 animate-spin rounded-full border-2 border-white/40 border-t-white" /></span>}
+      </div>
+      <div>
+        <div className="flex flex-wrap gap-2">
+          <label className={`cursor-pointer rounded-full bg-espresso px-4 py-2 text-sm font-semibold text-cream transition hover:scale-[1.03] ${busy ? 'pointer-events-none opacity-60' : ''}`}>
+            {user.avatar ? 'Change photo' : 'Add photo'}
+            <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" disabled={busy} onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) void upload(f) }} />
+          </label>
+          {user.avatar && <button type="button" disabled={busy} onClick={remove} className="rounded-full px-4 py-2 text-sm text-[#b4442f] hover:bg-[#fbeeea]">Remove</button>}
+        </div>
+        <p className={`mt-1.5 text-xs ${error ? 'text-[#b4442f]' : 'text-latte'}`}>{error || `JPG, PNG or WebP, up to ${PHOTO_MAX_MB} MB.`}</p>
+      </div>
+    </div>
+  )
+}
+
+export function Profile() {
   const { user, setUser } = useStore()
   const [name, setName] = useState(user?.name ?? '')
   const [phone, setPhone] = useState(user?.phone ?? '')
@@ -90,6 +140,7 @@ function Profile() {
   }
   return (
     <form noValidate onSubmit={save} className="grid gap-4">
+      <PhotoPicker />
       {msg && <Alert tone={msg.tone}>{msg.text}</Alert>}
       <Field label="Email" value={user?.email ?? ''} disabled hint="Contact the café to change your email." />
       <Field label="Full name" value={name} onChange={(e) => setName(e.target.value)} error={(touched ? errors.name : '') || server.name} autoComplete="name" />
@@ -99,7 +150,7 @@ function Profile() {
   )
 }
 
-function Password() {
+export function Password() {
   const [f, setF] = useState({ currentPassword: '', newPassword: '', confirm: '' })
   const [touched, setTouched] = useState(false)
   const [server, setServer] = useState<Record<string, string>>({})
@@ -148,6 +199,7 @@ export function AccountPanel() {
   if (!user) return null
   return (
     <Modal wide title={`Hi, ${user.name.split(' ')[0]}`} onClose={() => openPanel(null)}>
+      <div className="mb-5 flex items-center gap-3"><Avatar name={user.name} src={user.avatar} size={44} /><p className="text-sm text-latte">{user.email}</p></div>
       <div role="tablist" className="mb-5 flex gap-1 rounded-full bg-cream-2 p-1 text-sm">
         {(['orders', 'profile', 'password'] as const).map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className={`flex-1 rounded-full px-4 py-2 font-medium capitalize transition ${tab === t ? 'bg-roast text-cream' : 'text-brown hover:bg-white'}`}>

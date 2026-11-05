@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CartIcon } from '../components/Icons'
+import { Avatar } from '../components/shop/ui'
 import { useStore } from '../state/store'
 
 const links = [
@@ -44,8 +45,8 @@ export function Nav() {
             {cartCount > 0 && <span key={cartCount} className="absolute top-1 right-0.5 grid min-w-[18px] animate-bump place-items-center rounded-full bg-terra px-1 text-[10px] font-semibold text-white">{cartCount}</span>}
           </button>
           {/* One login button for customers and staff; admins land in the admin panel after signing in. */}
-          <button onClick={account} className="hidden items-center gap-2 rounded-full bg-espresso px-5 py-2.5 text-sm font-semibold text-cream transition hover:scale-[1.04] sm:flex">
-            {user && <span className="grid size-5 place-items-center rounded-full bg-terra text-[11px] text-white">{user.name[0]}</span>}
+          <button onClick={account} className={`hidden items-center gap-2 rounded-full bg-espresso ${user ? 'py-2 pr-5 pl-2' : 'px-5 py-2.5'} text-sm font-semibold text-cream transition hover:scale-[1.04] sm:flex`}>
+            {user && <Avatar name={user.name} src={user.avatar} size={22} />}
             {user ? user.name.split(' ')[0] : 'Log in'}
           </button>
           <button aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="grid size-11 place-items-center rounded-full md:hidden">

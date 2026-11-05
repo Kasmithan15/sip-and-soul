@@ -38,6 +38,8 @@ model User {
   name              String
   email             String    @unique
   phone             String    @default("")
+  /// Profile photo, served from /api/images/<id>.
+  avatar            String?
   passwordHash      String    @map("password_hash")
   role              UserRole  @default(customer)
   blocked           Boolean   @default(false)

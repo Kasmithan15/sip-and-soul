@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Password, Profile } from '../components/shop/AccountPanel'
 import { AuthPanel } from '../components/shop/AuthPanel'
+import { Avatar } from '../components/shop/ui'
 import { Panels } from '../components/shop/Panels'
 import { useStore } from '../state/store'
 import { CustomersAdmin } from './CustomersAdmin'
@@ -16,6 +18,7 @@ const TABS = [
   { id: 'menu', label: 'Menu & prices', note: 'Drinks, beans, photos and prices' },
   { id: 'website', label: 'Website text', note: 'Words, contact details and reviews' },
   { id: 'customers', label: 'Customers', note: 'Accounts and password resets' },
+  { id: 'profile', label: 'My profile', note: 'Your photo, details and password' },
 ] as const
 export type Tab = (typeof TABS)[number]['id']
 
@@ -66,7 +69,7 @@ export default function Admin() {
       <aside className={`fixed inset-y-0 left-0 z-40 flex w-[272px] flex-col bg-cream-2 transition-transform lg:sticky lg:top-0 lg:h-svh lg:translate-x-0 ${navOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
         <div className="px-7 pt-8 pb-6"><AdminLogo /><p className="mt-2 text-xs text-latte">Sip &amp; Soul Café</p></div>
         <nav aria-label="Admin" className="grid gap-1.5 px-4">
-          {TABS.map((t) => (
+          {TABS.filter((t) => t.id !== 'profile').map((t) => (
             <button
               key={t.id}
               onClick={() => { setTab(t.id); setNavOpen(false) }}
@@ -79,9 +82,11 @@ export default function Admin() {
           ))}
         </nav>
         <div className="mt-auto p-4">
-          <div className="flex items-center gap-3 rounded-3xl bg-cream p-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-terra font-display text-lg font-[800] text-white">{user.name[0]}</span>
-            <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{user.name}</p><p className="truncate text-xs text-latte">{user.email}</p></div>
+          <div className={`flex items-center gap-3 rounded-3xl p-3 transition ${tab === 'profile' ? 'bg-espresso text-cream' : 'bg-cream'}`}>
+            <button onClick={() => { setTab('profile'); setNavOpen(false) }} aria-label="My profile" className="flex min-w-0 flex-1 items-center gap-3 text-left">
+              <Avatar name={user.name} src={user.avatar} size={40} />
+              <div className="min-w-0"><p className="truncate text-sm font-semibold">{user.name}</p><p className={`truncate text-xs ${tab === 'profile' ? 'text-cream/60' : 'text-latte'}`}>Edit my profile</p></div>
+            </button>
             <button onClick={logout} aria-label="Sign out" title="Sign out" className="grid size-9 place-items-center rounded-full text-latte hover:bg-sand/60 hover:text-espresso">⎋</button>
           </div>
         </div>
@@ -106,6 +111,12 @@ export default function Admin() {
           {tab === 'menu' && <MenuAdmin />}
           {tab === 'website' && <SiteAdmin />}
           {tab === 'customers' && <CustomersAdmin />}
+          {tab === 'profile' && (
+            <div className="grid max-w-4xl gap-6 lg:grid-cols-2">
+              <section className="rounded-3xl bg-white p-7 shadow-[0_12px_32px_rgba(43,29,22,.07)]"><h2 className="mb-5 font-display text-2xl font-[800] tracking-tight">Photo &amp; details</h2><Profile /></section>
+              <section className="rounded-3xl bg-white p-7 shadow-[0_12px_32px_rgba(43,29,22,.07)]"><h2 className="mb-5 font-display text-2xl font-[800] tracking-tight">Password</h2><Password /></section>
+            </div>
+          )}
         </main>
       </div>
     </div>

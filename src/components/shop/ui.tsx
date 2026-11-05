@@ -122,3 +122,14 @@ export function Alert({ children, tone = 'error' }: { children: ReactNode; tone?
   const styles = { error: 'border-[#e6b8ae] bg-[#fbeeea] text-[#8f3424]', success: 'border-[#b9d8bf] bg-[#eef7ef] text-[#2d6a3a]', info: 'border-line bg-cream-2 text-brown' }
   return <div role={tone === 'error' ? 'alert' : 'status'} className={`mb-4 rounded-lg border px-4 py-3 text-sm ${styles[tone]}`}>{children}</div>
 }
+
+/** Round profile picture, or the first letter of the name when there's no photo. */
+export function Avatar({ name, src, size = 40, className = '' }: { name: string; src?: string | null; size?: number; className?: string }) {
+  return src ? (
+    <img src={src} alt="" width={size} height={size} className={`shrink-0 rounded-full object-cover ${className}`} style={{ width: size, height: size }} />
+  ) : (
+    <span aria-hidden className={`grid shrink-0 place-items-center rounded-full bg-terra font-display font-[800] text-white ${className}`} style={{ width: size, height: size, fontSize: size * 0.42 }}>
+      {name.trim()[0]?.toUpperCase() ?? '?'}
+    </span>
+  )
+}

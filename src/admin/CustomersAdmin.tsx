@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Modal } from '../components/shop/ui'
+import { Avatar, Modal } from '../components/shop/ui'
 import { api, ApiError } from '../lib/api'
 import { useStore } from '../state/store'
 
@@ -27,7 +27,7 @@ function ResetLink({ link, onClose }: { link: LinkFor; onClose: () => void }) {
   )
 }
 
-interface Customer { id: string; name: string; email: string; phone: string; role: 'customer' | 'admin'; blocked: boolean; createdAt: string; orders: number }
+interface Customer { id: string; name: string; email: string; phone: string; role: 'customer' | 'admin'; avatar: string | null; blocked: boolean; createdAt: string; orders: number }
 
 export function CustomersAdmin() {
   const { user } = useStore()
@@ -120,7 +120,7 @@ export function CustomersAdmin() {
             <tbody className="divide-y divide-line">
               {shown.map((c) => (
                 <tr key={c.id}>
-                  <td className="px-4 py-3 font-medium text-roast">{c.name}{c.role === 'admin' && <span className="ml-2 rounded-full bg-gold/30 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-roast uppercase">Admin</span>}</td>
+                  <td className="px-4 py-3 font-medium text-roast"><span className="inline-flex items-center gap-3"><Avatar name={c.name} src={c.avatar} size={36} /><span>{c.name}</span></span>{c.role === 'admin' && <span className="ml-2 rounded-full bg-gold/30 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-roast uppercase">Admin</span>}</td>
                   <td className="px-4 py-3"><div>{c.email}</div><div className="text-xs text-latte">{c.phone}</div></td>
                   <td className="px-4 py-3 text-latte">{new Date(c.createdAt).toLocaleDateString()}</td>
                   <td className="px-4 py-3">{c.orders}</td>

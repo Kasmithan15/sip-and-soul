@@ -19,7 +19,7 @@ export class UsersController {
     const users = await this.prisma.user.findMany({
       orderBy: { createdAt: 'desc' },
       take: 500,
-      select: { id: true, name: true, email: true, phone: true, role: true, blocked: true, createdAt: true, _count: { select: { orders: true } } },
+      select: { id: true, name: true, email: true, phone: true, role: true, avatar: true, blocked: true, createdAt: true, _count: { select: { orders: true } } },
     });
     return users.map(({ _count, ...u }) => ({ ...u, orders: _count.orders }));
   }

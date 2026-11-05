@@ -2,6 +2,7 @@ import { ConflictException, ForbiddenException, Injectable, UnauthorizedExceptio
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
 import { PrismaService } from '../prisma.service.js';
+import { imageIdFromUrl } from '../images/sniff.js';
 import type { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from './auth.dto.js';
 
 export interface SessionUser {
@@ -10,10 +11,11 @@ export interface SessionUser {
   email: string;
   phone: string;
   role: 'customer' | 'admin';
+  avatar: string | null;
   createdAt: Date;
 }
 
-export const sessionSelect = { id: true, name: true, email: true, phone: true, role: true, createdAt: true } as const;
+export const sessionSelect = { id: true, name: true, email: true, phone: true, role: true, avatar: true, createdAt: true } as const;
 
 // Compared against when the email is unknown, so a wrong email takes as long as a wrong password.
 const DUMMY_HASH = '$2b$12$Wym3CNjONpyYgexJS5.YTOBV.6UeNhrhXcyv2ywn8q68hfuC9sXDO';
@@ -45,6 +47,27 @@ export class AuthService {
     return this.toSession(user);
   }
 
+  /** Stores a new profile photo and deletes the one it replaces. */
+  async setAvatar(userId: string, data: Buffer, mimeType: string) {
+    const old = await this.prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { avatar: true } });
+    const image = await this.prisma.image.create({ data: { mimeType, data: new Uint8Array(data) }, select: { id: true } });
+    const user = await this.prisma.user.update({ where: { id: userId }, data: { avatar: `/api/images/${image.id}` } });
+    await this.deleteImage(old.avatar);
+    return this.toSession(user);
+  }
+
+  async removeAvatar(userId: string) {
+    const old = await this.prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { avatar: true } });
+    const user = await this.prisma.user.update({ where: { id: userId }, data: { avatar: null } });
+    await this.deleteImage(old.avatar);
+    return this.toSession(user);
+  }
+
+  private async deleteImage(url: string | null) {
+    const id = imageIdFromUrl(url);
+    if (id) await this.prisma.image.deleteMany({ where: { id } });
+  }
+
   async changePassword(userId: string, input: ChangePasswordDto) {
     const user = await this.prisma.user.findUniqueOrThrow({ where: { id: userId } });
     if (!(await compare(input.currentPassword, user.passwordHash))) {
@@ -64,6 +87,6 @@ export class AuthService {
   }
 
   private toSession(user: SessionUser & Record<string, unknown>): SessionUser {
-    return { id: user.id, name: user.name, email: user.email, phone: user.phone, role: user.role, createdAt: user.createdAt };
+    return { id: user.id, name: user.name, email: user.email, phone: user.phone, role: user.role, avatar: user.avatar ?? null, createdAt: user.createdAt };
   }
 }
