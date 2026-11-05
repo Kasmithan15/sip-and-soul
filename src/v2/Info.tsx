@@ -18,7 +18,7 @@ export function Recipes() {
     <section id="recipes" aria-labelledby="recipes-title" className="bg-cream py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <p data-reveal className="text-sm font-semibold tracking-[.3em] text-terra">RECIPES</p>
-        <h2 id="recipes-title" data-reveal className="mt-2 max-w-2xl font-display text-5xl leading-[.95] font-[900] tracking-tight md:text-6xl">Brew it like a barista at home</h2>
+        <h2 id="recipes-title" data-reveal className="mt-2 max-w-2xl font-display text-5xl leading-[.95] font-[900] tracking-tight md:text-6xl">Slow brews for slow mornings</h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {RECIPES.map((r, i) => (
             <article key={r.name} data-reveal={i * 0.1} className="rounded-3xl bg-sand/60 p-7 transition duration-500 hover:-translate-y-2 hover:shadow-[0_26px_50px_rgba(43,29,22,.12)]">
