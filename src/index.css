@@ -20,6 +20,7 @@
 
   --animate-letter-in: letter-in 0.4s var(--ease-smooth) forwards;
   --animate-flip-in: flip-in 0.6s var(--ease-smooth);
+  --animate-bean-label: bean-label 2.4s ease-in-out infinite;
   --animate-wobble: wobble 5s ease-in-out infinite;
   --animate-sway: sway 7s ease-in-out infinite;
   --animate-bump: bump 0.5s var(--ease-smooth);
@@ -31,6 +32,10 @@
   }
   @keyframes flip-in {
     from { opacity: 0; transform: rotateX(-80deg) translateY(10px); }
+  }
+  /* a slow "breathing" pulse, inviting the click */
+  @keyframes bean-label {
+    50% { scale: 1.06; }
   }
   @keyframes wobble { 50% { transform: rotate(20deg) scale(1.08); } }
   @keyframes sway { 50% { transform: rotate(8deg); } }

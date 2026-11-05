@@ -20,6 +20,23 @@ export interface Stat {
   decimals?: number
 }
 
+/** Neirah Tech, the company that built and runs this site (same details as the SecureView CCTV project). */
+export const company = {
+  name: 'Neirah Tech',
+  phone: '+94 76 004 1594',
+  phoneHref: 'tel:+94760041594',
+  email: 'info@neirahtech.com',
+  website: 'https://neirahtech.com',
+  websiteLabel: 'neirahtech.com',
+}
+
+// The site's public contact details use the company's phone and email rather than a personal number.
+export const contact = {
+  phone: company.phone,
+  phoneHref: company.phoneHref,
+  email: company.email,
+}
+
 export const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Menu', href: '#menu' },

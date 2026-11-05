@@ -12,7 +12,7 @@ export function BeanIntro({ onEnter }: { onEnter: () => void }) {
       aria-label="Enter Sip & Soul Café"
       onClick={onEnter}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onEnter()}
-      className="fixed inset-0 z-[60] cursor-pointer bg-[radial-gradient(ellipse_at_center,#6b4229_0%,#3a2418_55%,#24160e_100%)] outline-none"
+      className="group fixed inset-0 z-[60] cursor-pointer bg-[radial-gradient(ellipse_at_center,#6b4229_0%,#3a2418_55%,#24160e_100%)] outline-none"
     >
       <Canvas camera={{ position: [0, 0, 6], fov: 45 }} dpr={[1, 2]}>
         <IntroScene />
@@ -27,6 +27,13 @@ export function BeanIntro({ onEnter }: { onEnter: () => void }) {
         ))}
         <span className="mt-3 block font-sans text-[11px] tracking-[.6em] text-gold">CAFÉ</span>
       </h1>
+
+      {/* Invitation to enter, set like the title above. */}
+      <span
+        className="pointer-events-none absolute bottom-[9%] left-1/2 -translate-x-1/2 animate-bean-label whitespace-nowrap font-serif text-base tracking-[.25em] text-cream uppercase [text-shadow:0_2px_12px_rgba(0,0,0,.6)] transition-colors duration-300 group-hover:text-gold-light sm:text-xl"
+      >
+        Click for Coffee
+      </span>
 
       
     </div>

@@ -1,5 +1,5 @@
-import { navLinks } from '../data/content'
-import { FacebookIcon, InstagramIcon, XIcon, YoutubeIcon } from './Icons'
+import { company, contact, navLinks } from '../data/content'
+import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, XIcon, YoutubeIcon } from './Icons'
 import { Logo } from './Logo'
 
 const socials = [
@@ -31,7 +31,33 @@ export function Footer() {
           ))}
         </div>
       </div>
-      <p className="mt-8 text-center text-[11px] opacity-60">© {year} Sip &amp; Soul Café. All rights reserved.</p>
+      <div className="mt-8 flex flex-col items-center gap-1 border-t border-white/10 pt-6 text-center">
+        <span className="text-[11px] tracking-[.25em] text-gold">GET IN TOUCH</span>
+        <div className="flex flex-col items-center gap-x-8 gap-y-1 sm:flex-row">
+          <a href={contact.phoneHref} className="flex items-center gap-2 font-serif text-lg transition hover:text-gold">
+            <PhoneIcon className="size-[18px]" />
+            {contact.phone}
+          </a>
+          <a href={`mailto:${contact.email}`} className="flex items-center gap-2 font-serif text-lg transition hover:text-gold">
+            <MailIcon className="size-[18px]" />
+            {contact.email}
+          </a>
+        </div>
+      </div>
+      <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-5 text-[11px] sm:flex-row">
+        <p className="opacity-60">© {year} Sip &amp; Soul Café. All rights reserved.</p>
+        <p className="flex items-center gap-2 opacity-80">
+          <span className="opacity-75">Designed &amp; developed by</span>
+          <a
+            href={company.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-gold/40 px-3 py-1 font-semibold tracking-[.12em] text-gold uppercase transition hover:bg-gold hover:text-roast"
+          >
+            {company.name}
+          </a>
+        </p>
+      </div>
     </footer>
   )
 }
