@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module.js';
+import { BookingsModule } from './bookings/bookings.module.js';
 import { ImagesModule } from './images/images.module.js';
 import { MenuModule } from './menu/menu.module.js';
 import { OrdersModule } from './orders/orders.module.js';
@@ -30,6 +31,7 @@ class HealthController {
     OrdersModule,
     UsersModule,
     ImagesModule,
+    BookingsModule,
   ],
   controllers: [HealthController],
   providers: [

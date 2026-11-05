@@ -40,6 +40,8 @@ async function bootstrap() {
         imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
         connectSrc: ["'self'"],
         workerSrc: ["'self'", 'blob:'],
+        // Google Maps embed in the Visit Us section.
+        frameSrc: ['https://www.google.com', 'https://maps.google.com'],
       },
     },
   }));

@@ -1,20 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-espresso: #1e120c;
-  --color-roast: #2b1a12;
-  --color-brown: #3a2418;
-  --color-mocha: #6b4a35;
-  --color-latte: #6f5d50;
-  --color-gold: #d9b48a;
-  --color-gold-light: #e8cfae;
-  --color-cream: #f3ece3;
-  --color-cream-2: #ede3d6;
-  --color-line: #ddd0c0;
+  /* Bean-to-cup palette */
+  --color-espresso: #2b1d16;
+  --color-roast: #2b1d16;
+  --color-brown: #3d2a20;
+  --color-mocha: #7a5340;
+  --color-latte: #75645a;
+  --color-gold: #d9a37c;
+  --color-gold-light: #ecc9ab;
+  --color-cream: #f3eae0;
+  --color-cream-2: #eadccd;
+  --color-line: #dccab8;
+  --color-sand: #d9c3ae;
+  --color-terra: #c0623b;
+  --color-terra-dark: #9f4d2b;
 
-  --font-serif: "Playfair Display", Georgia, serif;
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-display: "Fraunces", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
-  --font-script: "Great Vibes", cursive;
+  --font-script: "Fraunces", Georgia, serif;
 
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -73,3 +78,15 @@
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes pop-in { from { opacity: 0; transform: translateY(16px) scale(.97); } }
 @keyframes slide-in { from { transform: translateX(100%); } }
+
+/* Soft steam wisps rising and fading. */
+@keyframes steam {
+  0% { transform: translateY(20px) scaleY(.6); opacity: 0; }
+  30% { opacity: .7; }
+  100% { transform: translateY(-80px) scaleY(1.3) translateX(10px); opacity: 0; }
+}
+.animate-steam { animation: steam 3.2s ease-out infinite; }
+
+/* Coffee pouring into the giant mug in "Find your cup". */
+@keyframes drip-stream { 0%, 100% { transform: scaleY(.92); } 50% { transform: scaleY(1.04); } }
+@keyframes drip-drop { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(150px); opacity: .9; } }

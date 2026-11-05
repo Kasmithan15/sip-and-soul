@@ -1,5 +1,5 @@
 import { Transform, Type } from 'class-transformer';
-import { IsBoolean, IsInt, IsNumber, IsString, Length, Matches, Max, MaxLength, Min } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsNumber, IsString, Length, Matches, Max, MaxLength, Min } from 'class-validator';
 
 const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value);
 
@@ -22,6 +22,9 @@ export class ProductDto {
   @Min(0.01, { message: 'Price must be more than 0.' })
   @Max(100_000, { message: 'Price is too high.' })
   price!: number;
+
+  @IsIn(['hot', 'cold', 'beans'], { message: 'Choose Hot, Cold or Beans.' })
+  category!: 'hot' | 'cold' | 'beans';
 
   @Transform(trim)
   @IsString()

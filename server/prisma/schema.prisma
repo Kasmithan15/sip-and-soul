@@ -12,6 +12,19 @@ enum UserRole {
   admin
 }
 
+enum ProductCategory {
+  hot
+  cold
+  beans
+}
+
+enum ReservationStatus {
+  requested
+  confirmed
+  declined
+  cancelled
+}
+
 enum OrderStatus {
   pending
   preparing
@@ -42,6 +55,7 @@ model Product {
   name        String
   description String   @default("")
   price       Decimal  @db.Decimal(10, 2)
+  category    ProductCategory @default(hot)
   image       String
   available   Boolean  @default(true)
   featured    Boolean  @default(true)
@@ -115,4 +129,28 @@ model AdminResetCode {
 
   @@index([userId])
   @@map("admin_reset_codes")
+}
+
+model Reservation {
+  id        String            @id @default(uuid()) @db.Uuid
+  name      String
+  phone     String
+  email     String
+  date      DateTime          @db.Date
+  time      String
+  guests    Int
+  note      String            @default("")
+  status    ReservationStatus @default(requested)
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  @@index([date])
+  @@map("reservations")
+}
+
+model Subscriber {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("subscribers")
 }

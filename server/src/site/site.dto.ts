@@ -41,6 +41,12 @@ class ContactDto {
   @Transform(trim) @IsOptional() @IsString() @MaxLength(120, { message: 'Opening hours must be 120 characters or fewer.' }) hours!: string;
 }
 
+class ReviewDto {
+  @Transform(trim) @IsString() @text(1, 40, 'Reviewer name') name!: string;
+  @Transform(trim) @IsString() @text(5, 280, 'Review text') text!: string;
+  @Type(() => Number) @IsInt() @Min(1, { message: 'Rating is 1 to 5.' }) @Max(5, { message: 'Rating is 1 to 5.' }) rating!: number;
+}
+
 export class SiteContentDto {
   @Transform(trim) @IsString() @text(1, 4, 'Currency symbol') currency!: string;
   @ValidateNested() @Type(() => HeroDto) hero!: HeroDto;
@@ -50,4 +56,5 @@ export class SiteContentDto {
   @ValidateNested({ each: true }) @Type(() => StatDto) @ArrayMinSize(4) @ArrayMaxSize(4) stats!: StatDto[];
   @ValidateNested() @Type(() => CtaDto) cta!: CtaDto;
   @ValidateNested() @Type(() => ContactDto) contact!: ContactDto;
+  @ValidateNested({ each: true }) @Type(() => ReviewDto) @ArrayMaxSize(6, { message: 'Up to 6 reviews.' }) reviews!: ReviewDto[];
 }

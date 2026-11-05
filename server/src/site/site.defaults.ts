@@ -37,13 +37,15 @@ export const siteDefaults = {
     address: '',
     hours: '',
   },
+  // Real guest reviews, added by the admin. The section stays hidden while this is empty.
+  reviews: [] as { name: string; text: string; rating: number }[],
 };
 
 export type SiteContent = typeof siteDefaults;
 
 export const defaultProducts = [
-  { name: 'Cappuccino', description: 'Espresso, steamed milk and velvet foam.', price: 4.5, image: 'images/1572442388796-11668a67e53d.jpg', sortOrder: 0 },
-  { name: 'Iced Latte', description: 'Cold milk, ice and a double shot.', price: 4, image: 'images/1461023058943-07fcbe16d735.jpg', sortOrder: 1 },
-  { name: 'Espresso', description: 'A short, rich double shot.', price: 3, image: 'images/1510591509098-f4fdc6d0ff04.jpg', sortOrder: 2 },
-  { name: 'Caramel Macchiato', description: 'Vanilla milk, espresso and caramel drizzle.', price: 4.5, image: 'images/1485808191679-5f86510681a2.jpg', sortOrder: 3 },
+  { name: 'Cappuccino', description: 'Espresso, steamed milk and velvet foam.', price: 4.5, category: 'hot' as const, image: 'images/1572442388796-11668a67e53d.jpg', sortOrder: 0 },
+  { name: 'Iced Latte', description: 'Cold milk, ice and a double shot.', price: 4, category: 'cold' as const, image: 'images/1461023058943-07fcbe16d735.jpg', sortOrder: 1 },
+  { name: 'Espresso', description: 'A short, rich double shot.', price: 3, category: 'hot' as const, image: 'images/1510591509098-f4fdc6d0ff04.jpg', sortOrder: 2 },
+  { name: 'Caramel Macchiato', description: 'Vanilla milk, espresso and caramel drizzle.', price: 4.5, category: 'hot' as const, image: 'images/1485808191679-5f86510681a2.jpg', sortOrder: 3 },
 ];

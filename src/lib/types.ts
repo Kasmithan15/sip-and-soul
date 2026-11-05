@@ -1,6 +1,7 @@
 export interface User { id: string; name: string; email: string; phone: string; role: 'customer' | 'admin'; createdAt: string }
 
-export interface MenuItem { id: string; name: string; description: string; price: number; image: string; available: boolean; featured: boolean; sortOrder: number }
+export type Category = 'hot' | 'cold' | 'beans'
+export interface MenuItem { id: string; name: string; description: string; price: number; category: Category; image: string; available: boolean; featured: boolean; sortOrder: number }
 
 export type OrderStatus = 'pending' | 'preparing' | 'ready' | 'completed' | 'cancelled'
 export interface OrderLine { productId: string; name: string; price: number; quantity: number }
@@ -18,6 +19,7 @@ export interface SiteContent {
   stats: { value: number; suffix: string; label: string; decimals: number }[]
   cta: { eyebrow: string; title: string }
   contact: { phone: string; email: string; address: string; hours: string }
+  reviews: { name: string; text: string; rating: number }[]
 }
 
 export const STATUS_LABEL: Record<OrderStatus, string> = {

@@ -30,14 +30,19 @@ export const defaultSite: SiteContent = {
   ],
   cta: { eyebrow: 'READY FOR A BETTER COFFEE EXPERIENCE?', title: 'Your Perfect Cup Awaits' },
   contact: { phone: '+94 76 004 1594', email: 'info@neirahtech.com', address: '', hours: '' },
+  reviews: [],
 }
 
-const item = (i: number, name: string, description: string, price: number, image: string): MenuItem =>
-  ({ id: `local-${i}`, name, description, price, image: `images/${image}.jpg`, available: true, featured: true, sortOrder: i })
+const item = (i: number, name: string, description: string, price: number, image: string, category: MenuItem['category'] = 'hot', featured = true): MenuItem =>
+  ({ id: `local-${i}`, name, description, price, category, image: `images/${image}.jpg`, available: true, featured, sortOrder: i })
 
 export const defaultMenu: MenuItem[] = [
   item(0, 'Cappuccino', 'Espresso, steamed milk and velvet foam.', 4.5, '1572442388796-11668a67e53d'),
-  item(1, 'Iced Latte', 'Cold milk, ice and a double shot.', 4, '1461023058943-07fcbe16d735'),
+  item(1, 'Iced Latte', 'Cold milk, ice and a double shot.', 4, '1461023058943-07fcbe16d735', 'cold'),
   item(2, 'Espresso', 'A short, rich double shot.', 3, '1510591509098-f4fdc6d0ff04'),
   item(3, 'Caramel Macchiato', 'Vanilla milk, espresso and caramel drizzle.', 4.5, '1485808191679-5f86510681a2'),
+  item(4, 'Café Latte', 'Silky steamed milk poured over a double shot.', 4.5, '1509042239860-f550ce710b93', 'hot', false),
+  item(5, 'Pour-Over', 'Single-origin beans, brewed by hand, one cup at a time.', 5, '1442512595331-e89e73853f31', 'hot', false),
+  item(6, 'Cold Brew', 'Steeped for 18 hours. Smooth, chocolatey and low in acid.', 4.75, '1517701604599-bb29b565090c', 'cold', false),
+  item(7, 'House Blend Beans · 250 g', 'Our signature medium roast. Whole beans, roasted this week.', 12, '1587734195503-904fca47e0e9', 'beans', false),
 ]

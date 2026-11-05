@@ -6,7 +6,7 @@ import { hasErrors } from '../lib/validate'
 import { useStore } from '../state/store'
 
 type Draft = Omit<MenuItem, 'id' | 'price'> & { id?: string; price: string }
-const blank = (sortOrder: number): Draft => ({ name: '', description: '', price: '', image: '', available: true, featured: true, sortOrder })
+const blank = (sortOrder: number): Draft => ({ name: '', description: '', price: '', category: 'hot', image: '', available: true, featured: true, sortOrder })
 const MAX_MB = 3
 
 function Editor({ draft: initial, onClose, onSaved }: { draft: Draft; onClose: () => void; onSaved: () => void }) {
@@ -51,7 +51,7 @@ function Editor({ draft: initial, onClose, onSaved }: { draft: Draft; onClose: (
     if (hasErrors(errors)) return
     setBusy(true)
     try {
-      const json = { name: d.name.trim(), description: d.description.trim(), price: Number(d.price), image: d.image, available: d.available, featured: d.featured, sortOrder: d.sortOrder }
+      const json = { name: d.name.trim(), description: d.description.trim(), price: Number(d.price), category: d.category, image: d.image, available: d.available, featured: d.featured, sortOrder: d.sortOrder }
       await api(d.id ? `/admin/menu/${d.id}` : '/admin/menu', { method: d.id ? 'PATCH' : 'POST', json })
       onSaved()
     } catch (err) {
@@ -85,6 +85,17 @@ function Editor({ draft: initial, onClose, onSaved }: { draft: Draft; onClose: (
           <Field label="Price" inputMode="decimal" value={d.price} onChange={(e) => set('price', e.target.value)} error={show('price')} placeholder="4.50" />
           <Field label="Order on menu" type="number" min={0} max={999} value={d.sortOrder} onChange={(e) => set('sortOrder', Math.max(0, Math.min(999, Math.round(Number(e.target.value) || 0))))} hint="Lower numbers show first." />
         </div>
+        <fieldset>
+          <legend className="mb-1.5 text-[13px] font-medium text-roast">Menu group</legend>
+          <div className="grid grid-cols-3 gap-2">
+            {(['hot', 'cold', 'beans'] as const).map((c) => (
+              <label key={c} className={`cursor-pointer rounded-lg border px-3 py-2 text-center text-sm capitalize transition ${d.category === c ? 'border-roast bg-roast text-cream' : 'border-line bg-white hover:border-mocha'}`}>
+                <input type="radio" name="category" className="sr-only" checked={d.category === c} onChange={() => set('category', c)} />
+                {c}
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={d.available} onChange={(e) => set('available', e.target.checked)} className="size-4 accent-[#3a2418]" /> Available to order</label>
         <label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={d.featured} onChange={(e) => set('featured', e.target.checked)} className="size-4 accent-[#3a2418]" /> Show on the homepage (“Coffee Favorites”)</label>
         <Submit busy={busy}>{d.id ? 'Save changes' : 'Add to menu'}</Submit>
@@ -106,7 +117,7 @@ export function MenuAdmin() {
   async function quick(m: MenuItem, patch: Partial<MenuItem>) {
     try {
       const next = { ...m, ...patch }
-      const json = { name: next.name, description: next.description, price: next.price, image: next.image, available: next.available, featured: next.featured, sortOrder: next.sortOrder }
+      const json = { name: next.name, description: next.description, price: next.price, category: next.category, image: next.image, available: next.available, featured: next.featured, sortOrder: next.sortOrder }
       await api(`/admin/menu/${m.id}`, { method: 'PATCH', json })
       changed()
     } catch (e) {
@@ -143,7 +154,7 @@ export function MenuAdmin() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <img src={m.image} alt="" className="size-12 rounded-lg object-cover" />
-                      <div><p className="font-medium text-roast">{m.name}</p><p className="line-clamp-1 max-w-[260px] text-xs text-latte">{m.description}</p></div>
+                      <div><p className="font-medium text-roast">{m.name} <span className="ml-1 rounded-full bg-cream-2 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-latte uppercase">{m.category}</span></p><p className="line-clamp-1 max-w-[260px] text-xs text-latte">{m.description}</p></div>
                     </div>
                   </td>
                   <td className="px-4 py-3 font-medium">{money(m.price)}</td>

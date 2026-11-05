@@ -32,6 +32,7 @@ function validate(s: SiteContent) {
   if (!EMAIL.test(s.contact.email.trim())) e['contact.email'] = 'Enter a valid email address.'
   if (s.contact.address.length > 160) e['contact.address'] = 'Address must be 160 characters or fewer.'
   if (s.contact.hours.length > 120) e['contact.hours'] = 'Opening hours must be 120 characters or fewer.'
+  s.reviews.forEach((r, i) => { len(`reviews.${i}.name`, r.name, 1, 40, 'Name'); len(`reviews.${i}.text`, r.text, 5, 280, 'Review') })
   return e
 }
 
@@ -159,6 +160,24 @@ export function SiteAdmin() {
       <Card title="Order banner">
         {field('Small heading', 'cta.eyebrow', s.cta.eyebrow, (v) => up((d) => { d.cta.eyebrow = v }), 80)}
         {field('Title', 'cta.title', s.cta.title, (v) => up((d) => { d.cta.title = v }), 60)}
+      </Card>
+
+      <Card title="Guest reviews" note="Copy real reviews from your customers (for example from Google). The section is hidden on the website until you add one.">
+        {s.reviews.map((r, i) => (
+          <div key={i} className="grid gap-3 rounded-xl bg-cream p-4 sm:grid-cols-[1fr_120px_auto] sm:items-start">
+            {field('Name', `reviews.${i}.name`, r.name, (v) => up((d) => { d.reviews[i].name = v }), 40)}
+            <label className="block text-[13px] font-medium text-roast">Stars
+              <select value={r.rating} onChange={(e) => up((d) => { d.reviews[i].rating = Number(e.target.value) })} className="mt-1.5 block w-full rounded-lg border border-line bg-white px-3 py-2.5 text-[15px]">
+                {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{'★'.repeat(n)}</option>)}
+              </select>
+            </label>
+            <button type="button" onClick={() => up((d) => { d.reviews.splice(i, 1) })} className="self-end rounded-full px-3 py-2.5 text-sm text-[#b4442f] hover:bg-[#fbeeea]">Remove</button>
+            <div className="sm:col-span-3">{field('Review', `reviews.${i}.text`, r.text, (v) => up((d) => { d.reviews[i].text = v }), 280, true)}</div>
+          </div>
+        ))}
+        {s.reviews.length < 6 && (
+          <button type="button" onClick={() => up((d) => { d.reviews.push({ name: '', text: '', rating: 5 }) })} className="justify-self-start rounded-full border border-line bg-white px-5 py-2.5 text-sm font-medium text-roast hover:border-mocha">+ Add a review</button>
+        )}
       </Card>
 
       <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-end gap-3 rounded-2xl border border-line bg-white/95 p-4 shadow-lg backdrop-blur">

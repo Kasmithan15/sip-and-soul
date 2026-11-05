@@ -6,12 +6,14 @@ import { useStore } from '../state/store'
 import { CustomersAdmin } from './CustomersAdmin'
 import { MenuAdmin } from './MenuAdmin'
 import { OrdersAdmin } from './OrdersAdmin'
+import { ReservationsAdmin } from './ReservationsAdmin'
 import { Overview } from './Overview'
 import { SiteAdmin } from './SiteAdmin'
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: '◎' },
   { id: 'orders', label: 'Orders', icon: '☕' },
+  { id: 'reservations', label: 'Reservations', icon: '◷' },
   { id: 'menu', label: 'Menu & prices', icon: '☰' },
   { id: 'website', label: 'Website text', icon: '✎' },
   { id: 'customers', label: 'Customers', icon: '☺' },
@@ -88,6 +90,7 @@ export default function Admin() {
         <main className="p-5 sm:p-8">
           {tab === 'overview' && <Overview go={setTab} />}
           {tab === 'orders' && <OrdersAdmin />}
+          {tab === 'reservations' && <ReservationsAdmin />}
           {tab === 'menu' && <MenuAdmin />}
           {tab === 'website' && <SiteAdmin />}
           {tab === 'customers' && <CustomersAdmin />}
