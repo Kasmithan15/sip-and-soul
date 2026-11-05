@@ -1,4 +1,5 @@
-import { company, contact, navLinks } from '../data/content'
+import { company, navLinks } from '../data/content'
+import { useStore } from '../state/store'
 import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, XIcon, YoutubeIcon } from './Icons'
 import { Logo } from './Logo'
 
@@ -12,6 +13,8 @@ const socials = [
 const year = new Date().getFullYear()
 
 export function Footer() {
+  const { contact } = useStore().site
+  const tel = `tel:${contact.phone.replace(/[^\d+]/g, '')}`
   return (
     <footer id="contact" className="bg-espresso px-6 pt-10 pb-6 text-cream sm:px-[10%]">
       <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
@@ -34,7 +37,7 @@ export function Footer() {
       <div className="mt-8 flex flex-col items-center gap-1 border-t border-white/10 pt-6 text-center">
         <span className="text-[11px] tracking-[.25em] text-gold">GET IN TOUCH</span>
         <div className="flex flex-col items-center gap-x-8 gap-y-1 sm:flex-row">
-          <a href={contact.phoneHref} className="flex items-center gap-2 font-serif text-lg transition hover:text-gold">
+          <a href={tel} className="flex items-center gap-2 font-serif text-lg transition hover:text-gold">
             <PhoneIcon className="size-[18px]" />
             {contact.phone}
           </a>
@@ -43,6 +46,13 @@ export function Footer() {
             {contact.email}
           </a>
         </div>
+        {(contact.address || contact.hours) && (
+          <p className="mt-2 text-center text-[13px] opacity-75">
+            {contact.address}
+            {contact.address && contact.hours && ' · '}
+            {contact.hours}
+          </p>
+        )}
       </div>
       <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-5 text-[11px] sm:flex-row">
         <p className="opacity-60">© {year} Sip &amp; Soul Café. All rights reserved.</p>

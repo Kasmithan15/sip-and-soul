@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:server": "npm --prefix server run start:dev",
+    "build:all": "npm run build && cd server && npm ci --include=dev --no-audit --no-fund && npm run db:generate && npm run build",
+    "start": "cd server && npm run deploy:start"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
@@ -27,5 +30,8 @@
     "oxlint": "^1.89.0",
     "typescript": "~7.0.2",
     "vite": "^8.3.5"
+  },
+  "engines": {
+    "node": ">=22.12"
   }
 }

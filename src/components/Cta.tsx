@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { images } from '../data/content'
+import { useStore } from '../state/store'
 import { Button } from './Button'
 import { Reveal } from './Reveal'
 
 export function Cta() {
+  const { site, openPanel } = useStore()
   const ref = useRef<HTMLElement>(null)
   const [offset, setOffset] = useState(0)
 
@@ -32,15 +34,13 @@ export function Cta() {
         }}
       />
       <Reveal>
-        <p className="mb-3 text-[10px] font-medium tracking-[.22em]">READY FOR A BETTER COFFEE EXPERIENCE?</p>
-        <h2 className="font-serif text-[clamp(1.8rem,3vw,2.4rem)] leading-tight font-normal">
-          Your Perfect Cup
-          <br />
-          Awaits
+        <p className="mb-3 text-[10px] font-medium tracking-[.22em]">{site.cta.eyebrow}</p>
+        <h2 className="max-w-[14ch] font-serif text-[clamp(1.8rem,3vw,2.4rem)] leading-tight font-normal">
+          {site.cta.title}
         </h2>
       </Reveal>
       <Reveal delay={0.15}>
-        <Button small arrow>Shop Now</Button>
+        <Button small arrow onClick={() => openPanel('menu')}>Shop Now</Button>
       </Reveal>
     </section>
   )

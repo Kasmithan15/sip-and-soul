@@ -1,8 +1,9 @@
-import { features, type Feature } from '../data/content'
+import type { SiteContent } from '../lib/types'
+import { useStore } from '../state/store'
 import { BeanIcon, LeafIcon, ShieldIcon, TruckIcon } from './Icons'
 import { Reveal } from './Reveal'
 
-const icons: Record<Feature['icon'], typeof BeanIcon> = {
+const icons: Record<SiteContent['features'][number]['icon'], typeof BeanIcon> = {
   bean: BeanIcon,
   leaf: LeafIcon,
   truck: TruckIcon,
@@ -10,13 +11,14 @@ const icons: Record<Feature['icon'], typeof BeanIcon> = {
 }
 
 export function Features() {
+  const { features } = useStore().site
   return (
     <section id="features" className="grid grid-cols-2 gap-y-10 bg-cream px-4 py-16 sm:px-[7%] lg:grid-cols-4">
       {features.map((f, i) => {
         const Icon = icons[f.icon]
         return (
           <Reveal
-            key={f.title}
+            key={i}
             delay={i * 0.12}
             className={`group px-3 text-center lg:px-6 ${i % 2 === 0 ? 'border-r border-line' : ''} ${i === 1 ? 'lg:border-r lg:border-line' : ''}`}
           >

@@ -1,4 +1,7 @@
-import { stats, type Stat } from '../data/content'
+import type { SiteContent } from '../lib/types'
+import { useStore } from '../state/store'
+
+type Stat = SiteContent['stats'][number]
 import { useCountUp } from '../hooks/useCountUp'
 import { useInView } from '../hooks/useInView'
 
@@ -17,13 +20,14 @@ function StatItem({ stat, visible, className }: { stat: Stat; visible: boolean; 
 }
 
 export function Stats() {
+  const { stats } = useStore().site
   const { ref, inView } = useInView<HTMLElement>(0.5)
 
   return (
     <section ref={ref} className="grid grid-cols-2 gap-y-10 bg-cream px-4 py-14 sm:px-[7%] lg:grid-cols-4">
       {stats.map((s, i) => (
         <StatItem
-          key={s.label}
+          key={i}
           stat={s}
           visible={inView}
           className={`${i % 2 === 0 ? 'border-r border-line' : ''} ${i === 1 ? 'lg:border-r lg:border-line' : ''}`}

@@ -1,9 +1,12 @@
 import { images } from '../data/content'
+import { useStore } from '../state/store'
 import { Button } from './Button'
 import { BeanSolid, LeafOutline } from './Icons'
 import { Reveal } from './Reveal'
 
 export function Story() {
+  const { site, openPanel } = useStore()
+  const { story } = site
   return (
     <section id="about" className="grid overflow-hidden md:grid-cols-2 lg:min-h-[420px] lg:grid-cols-[1fr_1.13fr_.95fr]">
       <Reveal direction="left" className="group h-[300px] overflow-hidden md:h-auto">
@@ -16,13 +19,12 @@ export function Story() {
       </Reveal>
 
       <Reveal className="flex flex-col justify-center bg-brown px-6 py-12 text-cream sm:px-14 sm:py-16">
-        <p className="mb-4 text-[11px] font-medium tracking-[.22em] text-gold">OUR STORY</p>
-        <h2 className="mb-6 font-serif text-[clamp(1.8rem,2.6vw,2.3rem)] leading-tight font-normal">More Than Just Coffee</h2>
+        <p className="mb-4 text-[11px] font-medium tracking-[.22em] text-gold">{story.eyebrow}</p>
+        <h2 className="mb-6 font-serif text-[clamp(1.8rem,2.6vw,2.3rem)] leading-tight font-normal">{story.title}</h2>
         <p className="mb-8 max-w-[380px] text-sm leading-loose opacity-90">
-          Sip &amp; Soul Café was born from a simple belief — that great coffee brings people together. We source the finest beans,
-          craft every drink with care, and create a space where every cup feels special.
+          {story.text}
         </p>
-        <Button small arrow className="self-start">Learn More</Button>
+        <Button small arrow className="self-start" onClick={() => openPanel('menu')}>See the Menu</Button>
       </Reveal>
 
       <Reveal
@@ -35,7 +37,7 @@ export function Story() {
         <BeanSolid lineColor="#f3ece3" className="mb-4 size-11 animate-wobble" />
         <h3 className="font-serif whitespace-nowrap text-[clamp(1.6rem,2.6vw,2.2rem)] font-normal tracking-[.15em]">SIP &amp; SOUL</h3>
         <span className="mt-1.5 mb-6 text-[13px] tracking-[.4em]">CAFÉ</span>
-        <p className="font-script text-[2.1rem] text-mocha">Elegance in Every Sip</p>
+        <p className="font-script text-[2.1rem] text-mocha">{story.tagline}</p>
       </Reveal>
     </section>
   )

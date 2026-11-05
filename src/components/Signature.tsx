@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { products, type Product } from '../data/content'
+import type { MenuItem } from '../lib/types'
+import { useStore } from '../state/store'
 import { Button } from './Button'
 import { CartIcon } from './Icons'
 import { Reveal } from './Reveal'
 import { Tilt } from './Tilt'
 
-function ProductCard({ product, onAdd }: { product: Product; onAdd: () => void }) {
+function ProductCard({ product, onAdd }: { product: MenuItem; onAdd: () => void }) {
+  const { money } = useStore()
   const [clicks, setClicks] = useState(0)
 
   return (
@@ -21,7 +23,7 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: () => void }
       <div className="flex items-end justify-between px-4 pt-4 pb-5">
         <div>
           <h4 className="mb-1.5 text-sm font-medium text-roast">{product.name}</h4>
-          <span className="text-[13px] text-latte">${product.price.toFixed(2)}</span>
+          <span className="text-[13px] text-latte">{money(product.price)}</span>
         </div>
         <button
           // Remounting on each click replays the press animation.
@@ -41,23 +43,25 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: () => void }
   )
 }
 
-export function Signature({ onAddToCart }: { onAddToCart: () => void }) {
+export function Signature() {
+  const { site, menu, addToCart, openPanel } = useStore()
+  const featured = menu.filter((m) => m.featured).slice(0, 8)
   return (
     <section id="menu" className="grid items-center gap-12 bg-cream-2 px-4 py-20 sm:px-[7%] lg:grid-cols-[1fr_2.4fr]">
       <Reveal>
-        <p className="mb-4 text-[11px] font-medium tracking-[.22em] text-mocha">OUR SIGNATURE</p>
-        <h2 className="mb-5 font-serif text-[clamp(2rem,3vw,2.6rem)] leading-tight font-normal text-roast">Coffee Favorites</h2>
+        <p className="mb-4 text-[11px] font-medium tracking-[.22em] text-mocha">{site.menu.eyebrow}</p>
+        <h2 className="mb-5 font-serif text-[clamp(2rem,3vw,2.6rem)] leading-tight font-normal text-roast">{site.menu.title}</h2>
         <p className="mb-8 leading-relaxed text-[#5a483b]">
-          From rich espressos to creamy lattes, our menu is crafted to bring out the best in every bean.
+          {site.menu.text}
         </p>
-        <Button variant="dark" arrow>View Full Menu</Button>
+        <Button variant="dark" arrow onClick={() => openPanel('menu')}>View Full Menu</Button>
       </Reveal>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
-        {products.map((p, i) => (
-          <Reveal key={p.name} delay={0.15 + i * 0.12}>
+        {featured.map((p, i) => (
+          <Reveal key={p.id} delay={0.15 + i * 0.12}>
             <Tilt>
-              <ProductCard product={p} onAdd={onAddToCart} />
+              <ProductCard product={p} onAdd={() => addToCart(p)} />
             </Tilt>
           </Reveal>
         ))}

@@ -1,13 +1,14 @@
 import { Canvas } from '@react-three/fiber'
 import { useEffect, useMemo, useState } from 'react'
 import { images } from '../data/content'
+import { useStore } from '../state/store'
 import { BREW_MS, CUP_LAND_MS } from '../data/brew'
 import { CoffeeScene } from '../three/CoffeeScene'
 import { Button } from './Button'
 
-const TITLE_LINES = ['Elegance in', 'Every Sip.']
-
 export function Hero({ show }: { show: boolean }) {
+  const { site, openPanel } = useStore()
+  const TITLE_LINES = [site.hero.titleLine1, site.hero.titleLine2]
   const [ready, setReady] = useState(false)
   // Drag-to-rotate would block page scrolling on touch screens.
   const finePointer = useMemo(() => window.matchMedia('(pointer: fine)').matches, [])
@@ -42,21 +43,20 @@ export function Hero({ show }: { show: boolean }) {
 
       <div className="z-10 mx-auto w-full max-w-[520px] text-center lg:mx-0 lg:text-left">
         <p style={enter(0)} className="mb-5 text-[11px] font-medium tracking-[.22em] text-gold">
-          PREMIUM COFFEE • FRESHLY BREWED • ALWAYS
+          {site.hero.eyebrow}
         </p>
         <h1 className="mb-6 font-serif text-[clamp(2.8rem,5.4vw,4.6rem)] leading-[1.05] font-normal">
           {TITLE_LINES.map((line, i) => (
-            <span key={line} style={enter(1 + i)} className="block">
+            <span key={i} style={enter(1 + i)} className="block">
               {line}
             </span>
           ))}
         </h1>
         <p style={enter(3)} className="mx-auto mb-9 max-w-[420px] leading-relaxed text-cream/85 lg:mx-0">
-          Discover Sip &amp; Soul Café — premium coffee, handcrafted beverages, and a cozy experience made for true coffee
-          lovers.
+          {site.hero.text}
         </p>
         <div style={enter(4)} className="flex flex-wrap justify-center gap-4 lg:justify-start">
-          <Button href="#menu" arrow>Order Now</Button>
+          <Button arrow onClick={() => openPanel('menu')}>Order Now</Button>
           <Button href="#menu" variant="outline">Explore Menu</Button>
         </div>
       </div>

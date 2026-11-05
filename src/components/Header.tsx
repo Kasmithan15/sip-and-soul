@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { navLinks } from '../data/content'
+import { useStore } from '../state/store'
 import { CartIcon, SearchIcon, UserIcon } from './Icons'
 import { Logo } from './Logo'
 
-export function Header({ cartCount }: { cartCount: number }) {
+export function Header() {
+  const { cartCount, user, openPanel } = useStore()
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -50,12 +52,18 @@ export function Header({ cartCount }: { cartCount: number }) {
       </nav>
 
       <div className="flex items-center gap-4 sm:gap-6">
-        {[SearchIcon, UserIcon].map((Icon, i) => (
-          <button key={i} aria-label={i ? 'Account' : 'Search'} className="transition hover:-translate-y-0.5 hover:text-gold">
-            <Icon className="size-[22px]" />
-          </button>
-        ))}
-        <button aria-label="Cart" className="relative transition hover:-translate-y-0.5 hover:text-gold">
+        <button aria-label="Search the menu" onClick={() => openPanel('menu')} className="transition hover:-translate-y-0.5 hover:text-gold">
+          <SearchIcon className="size-[22px]" />
+        </button>
+        <button
+          aria-label={user ? `My account (${user.name})` : 'Sign in'}
+          onClick={() => openPanel(user ? 'account' : 'login')}
+          className="flex items-center gap-2 transition hover:-translate-y-0.5 hover:text-gold"
+        >
+          <UserIcon className="size-[22px]" />
+          <span className="hidden text-sm lg:inline">{user ? user.name.split(' ')[0] : 'Sign in'}</span>
+        </button>
+        <button aria-label={`Cart, ${cartCount} items`} onClick={() => openPanel('cart')} className="relative transition hover:-translate-y-0.5 hover:text-gold">
           <CartIcon className="size-[22px]" />
           <span
             // Remounting on each change replays the bump animation.

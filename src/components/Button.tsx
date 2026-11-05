@@ -15,13 +15,16 @@ interface ButtonProps {
   small?: boolean
   arrow?: boolean
   className?: string
+  onClick?: () => void
 }
 
 /** Pill link with a colour wipe and a sliding arrow on hover. */
-export function Button({ children, href = '#', variant = 'gold', small, arrow, className = '' }: ButtonProps) {
+export function Button({ children, href, variant = 'gold', small, arrow, className = '', onClick }: ButtonProps) {
+  const Tag = href ? 'a' : 'button'
   return (
-    <a
+    <Tag
       href={href}
+      onClick={onClick}
       className={`group relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full font-medium
         transition-all duration-500 ease-smooth hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,.25)]
         before:absolute before:inset-0 before:-z-10 before:-translate-x-full before:transition-transform before:duration-500
@@ -30,6 +33,6 @@ export function Button({ children, href = '#', variant = 'gold', small, arrow, c
     >
       {children}
       {arrow && <span className="transition-transform duration-500 ease-smooth group-hover:translate-x-1.5">→</span>}
-    </a>
+    </Tag>
   )
 }
