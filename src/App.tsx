@@ -18,14 +18,14 @@ const isAdminRoute = () => window.location.hash.startsWith('#/admin')
 
 function Site() {
   // The 3D bean intro stays until the visitor clicks, then the site shows straight away.
-  const [entered, setEntered] = useState(false)
+  const [entered, setEntered] = useState(() => sessionStorage.getItem('sipsoul-entered') === '1')
 
   useEffect(() => {
     document.body.style.overflow = entered ? '' : 'hidden'
     if (!entered) window.scrollTo(0, 0)
   }, [entered])
 
-  if (!entered) return <BeanIntro onEnter={() => setEntered(true)} />
+  if (!entered) return <BeanIntro onEnter={() => { sessionStorage.setItem('sipsoul-entered', '1'); setEntered(true) }} />
 
   return (
     <>

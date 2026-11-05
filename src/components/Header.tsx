@@ -56,12 +56,12 @@ export function Header() {
           <SearchIcon className="size-[22px]" />
         </button>
         <button
-          aria-label={user ? `My account (${user.name})` : 'Sign in'}
-          onClick={() => openPanel(user ? 'account' : 'login')}
+          aria-label={user ? (user.role === 'admin' ? 'Admin panel' : `My account (${user.name})`) : 'Sign in'}
+          onClick={() => (user?.role === 'admin' ? (window.location.hash = '#/admin') : openPanel(user ? 'account' : 'login'))}
           className="flex items-center gap-2 transition hover:-translate-y-0.5 hover:text-gold"
         >
           <UserIcon className="size-[22px]" />
-          <span className="hidden text-sm lg:inline">{user ? user.name.split(' ')[0] : 'Sign in'}</span>
+          <span className="hidden text-sm lg:inline">{user ? (user.role === 'admin' ? 'Admin' : user.name.split(' ')[0]) : 'Sign in'}</span>
         </button>
         <button aria-label={`Cart, ${cartCount} items`} onClick={() => openPanel('cart')} className="relative transition hover:-translate-y-0.5 hover:text-gold">
           <CartIcon className="size-[22px]" />

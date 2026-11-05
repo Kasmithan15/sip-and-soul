@@ -1,9 +1,6 @@
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { BeanSolid } from '../components/Icons'
-import { Alert, Field, PasswordField, Submit } from '../components/shop/ui'
-import { api, ApiError } from '../lib/api'
-import type { User } from '../lib/types'
-import { rules } from '../lib/validate'
+import { AuthPanel } from '../components/shop/AuthPanel'
 import { useStore } from '../state/store'
 import { CustomersAdmin } from './CustomersAdmin'
 import { MenuAdmin } from './MenuAdmin'
@@ -20,57 +17,19 @@ const TABS = [
 ] as const
 export type Tab = (typeof TABS)[number]['id']
 
-function AdminLogin() {
-  const { setUser, online } = useStore()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [touched, setTouched] = useState(false)
-  const [error, setError] = useState('')
-  const [busy, setBusy] = useState(false)
-  const errors = { email: rules.email(email), password: password ? '' : 'Enter your password.' }
-
-  async function submit(e: FormEvent) {
-    e.preventDefault()
-    setTouched(true)
-    setError('')
-    if (errors.email || errors.password) return
-    setBusy(true)
-    try {
-      setUser(await api<User>('/auth/login', { method: 'POST', json: { email, password } }))
-    } catch (err) {
-      setError((err as ApiError).status === 429 ? 'Too many attempts. Please wait a minute.' : (err as ApiError).message)
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  return (
-    <div className="grid min-h-svh place-items-center bg-espresso px-4 text-brown">
-      <form noValidate onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-cream p-8 shadow-2xl">
-        <div className="mb-6 text-center">
-          <BeanSolid className="mx-auto mb-2 size-7 text-roast" lineColor="#f3ece3" />
-          <h1 className="font-serif text-2xl text-roast">Sip &amp; Soul Admin</h1>
-          <p className="mt-1 text-sm text-latte">Sign in with your admin account</p>
-        </div>
-        {!online && <Alert tone="info">The admin panel needs the café server. It isn't available on this copy of the site.</Alert>}
-        <Alert>{error}</Alert>
-        <div className="grid gap-4">
-          <Field label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} error={touched ? errors.email : ''} />
-          <PasswordField label="Password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} error={touched ? errors.password : ''} />
-          <Submit busy={busy}>Sign in</Submit>
-        </div>
-        <a href="#home" className="mt-5 block text-center text-sm text-latte hover:text-roast">← Back to the website</a>
-      </form>
-    </div>
-  )
-}
-
 export default function Admin() {
   const { user, logout } = useStore()
   const [tab, setTab] = useState<Tab>('overview')
   const [navOpen, setNavOpen] = useState(false)
 
-  if (!user) return <AdminLogin />
+  // Not signed in: the same sign-in form as the website, over the admin background.
+  if (!user) {
+    return (
+      <div className="min-h-svh bg-espresso">
+        <AuthPanel mode="login" onClose={() => { window.location.hash = '#home' }} />
+      </div>
+    )
+  }
   if (user.role !== 'admin') {
     return (
       <div className="grid min-h-svh place-items-center bg-espresso px-4 text-center text-cream">

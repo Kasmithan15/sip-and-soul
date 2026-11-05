@@ -7,7 +7,8 @@ import { Alert, Field, Modal, PasswordField, Submit } from './ui'
 
 const STRENGTH = ['Too weak', 'Weak', 'Okay', 'Good', 'Strong']
 
-export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
+/** One sign-in for everyone: customers stay on the website, admins go straight to the admin panel. */
+export function AuthPanel({ mode, onClose }: { mode: 'login' | 'register'; onClose?: () => void }) {
   const { setUser, openPanel, afterLogin, online } = useStore()
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirm: '' })
   const [touched, setTouched] = useState<Record<string, boolean>>({})
@@ -43,7 +44,12 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
         : { email: form.email, password: form.password }
       const user = await api<User>(register ? '/auth/register' : '/auth/login', { method: 'POST', json: body })
       setUser(user)
-      openPanel(afterLogin)
+      if (user.role === 'admin') {
+        openPanel(null)
+        window.location.hash = '#/admin'
+      } else {
+        openPanel(afterLogin)
+      }
     } catch (err) {
       if (err instanceof ApiError) {
         setServerErrors(err.fields)
@@ -57,10 +63,10 @@ export function AuthPanel({ mode }: { mode: 'login' | 'register' }) {
   const strength = passwordStrength(form.password)
 
   return (
-    <Modal title={register ? 'Create your account' : 'Welcome back'} onClose={() => openPanel(null)}>
+    <Modal title={register ? 'Create your account' : 'Welcome back'} onClose={onClose ?? (() => openPanel(null))}>
       {!online && <Alert tone="info">Accounts and online ordering need the café server. This copy of the site is a preview only.</Alert>}
       <p className="mb-5 text-sm text-latte">
-        {register ? 'Order ahead, track your coffee and save your details for next time.' : 'Sign in to order and see your orders.'}
+        {register ? 'Order ahead, track your coffee and save your details for next time.' : 'Customers and café staff both sign in here.'}
       </p>
       <Alert>{message}</Alert>
       <form noValidate onSubmit={submit} className="grid gap-4">
