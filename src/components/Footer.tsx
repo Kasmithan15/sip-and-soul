@@ -52,9 +52,11 @@ export function Footer() {
             href={company.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-gold/40 px-3 py-1 font-semibold tracking-[.12em] text-gold uppercase transition hover:bg-gold hover:text-roast"
+            aria-label={`${company.name} website`}
+            className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 transition hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,.35)]"
           >
-            {company.name}
+            <img src="images/neirah-icon.png" alt="" className="h-4 w-auto" />
+            <img src="images/neirah-wordmark.png" alt={company.name} className="h-2.5 w-auto" />
           </a>
         </p>
       </div>
