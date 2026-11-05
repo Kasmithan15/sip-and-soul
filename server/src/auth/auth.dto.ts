@@ -87,3 +87,22 @@ export class ResetPasswordDto {
   @Matches(PASSWORD_PATTERN, { message: 'Password must contain at least one letter and one number.' })
   password!: string;
 }
+
+export class AdminCodeRequestDto {
+  @Transform(lower)
+  @IsEmail({}, { message: 'Enter a valid email address.' })
+  @MaxLength(254)
+  email!: string;
+}
+
+export class AdminCodeResetDto extends AdminCodeRequestDto {
+  @Transform(trim)
+  @Matches(/^\d{6}$/, { message: 'Enter the 6-digit code from the text message.' })
+  code!: string;
+
+  @IsString()
+  @MinLength(12, { message: 'Admin password must be at least 12 characters.' })
+  @MaxLength(72, { message: 'Password must be 72 characters or fewer.' })
+  @Matches(PASSWORD_PATTERN, { message: 'Password must contain at least one letter and one number.' })
+  password!: string;
+}

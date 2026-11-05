@@ -27,6 +27,7 @@ Designed & developed by **Neirah Tech Solution (Pvt) Ltd.** · +94 76 004 1594 �
 - Add, edit and delete drinks: name, description, price, photo upload, availability and whether the drink shows on the homepage.
 - Edit all website text and the contact details in the footer.
 - Search customers, and block, unblock or delete their accounts.
+- Reset their own forgotten password with a 6-digit code texted to the admin phone (**Forgot password? → Get a reset code by text message**). The code expires in 10 minutes and stops working after 5 wrong tries.
 - Answer password reset requests: create a one-time reset link and send it by WhatsApp or copy it. This is used when no email service is set up.
 
 ### Validation and security
@@ -79,6 +80,7 @@ The server also serves the built website, so the whole site runs as one Railway 
 4. Under **Settings → Networking**, click **Generate Domain**.
 5. Deploy. `railway.json` builds the website and server, runs the database migrations, adds the starter drinks and creates the admin account.
 6. Optional: to email reset links automatically, create a free [Resend](https://resend.com) account and add `RESEND_API_KEY` and `MAIL_FROM` (for example `Sip & Soul Café <no-reply@yourdomain.com>`). Without them, reset requests appear in **Admin → Customers**.
-7. After the first successful deploy, remove `ADMIN_PASSWORD` (and `ADMIN_EMAIL`) from the variables. Otherwise the admin password is reset on every deploy.
+7. For admin password reset by text message, add `ADMIN_RESET_PHONE` (the admin's mobile number) and the [Notify.lk](https://notify.lk) SMS settings `NOTIFY_USER_ID`, `NOTIFY_API_KEY` and `NOTIFY_SENDER_ID`. On your own computer, without the SMS settings, the code is printed in the server terminal instead.
+8. After the first successful deploy, remove `ADMIN_PASSWORD` (and `ADMIN_EMAIL`) from the variables. Otherwise the admin password is reset on every deploy.
 
 The GitHub Pages copy (`deploy.sh`) is a static preview only. It shows the site but cannot sign in or take orders.

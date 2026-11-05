@@ -32,6 +32,7 @@ model User {
   passwordChangedAt DateTime? @map("password_changed_at")
   orders            Order[]
   passwordResets    PasswordReset[]
+  adminResetCodes   AdminResetCode[]
 
   @@map("users")
 }
@@ -100,4 +101,18 @@ model PasswordReset {
 
   @@index([userId])
   @@map("password_resets")
+}
+
+/// A 6-digit code texted to the admin reset phone. Only an HMAC of the code is stored.
+model AdminResetCode {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String   @map("code_hash")
+  attempts  Int      @default(0)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("admin_reset_codes")
 }

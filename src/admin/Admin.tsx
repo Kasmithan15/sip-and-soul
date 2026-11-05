@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BeanSolid } from '../components/Icons'
 import { AuthPanel } from '../components/shop/AuthPanel'
+import { Panels } from '../components/shop/Panels'
 import { useStore } from '../state/store'
 import { CustomersAdmin } from './CustomersAdmin'
 import { MenuAdmin } from './MenuAdmin'
@@ -18,7 +19,7 @@ const TABS = [
 export type Tab = (typeof TABS)[number]['id']
 
 export default function Admin() {
-  const { user, logout } = useStore()
+  const { user, logout, panel } = useStore()
   const [tab, setTab] = useState<Tab>('overview')
   const [navOpen, setNavOpen] = useState(false)
 
@@ -26,7 +27,7 @@ export default function Admin() {
   if (!user) {
     return (
       <div className="min-h-svh bg-espresso">
-        <AuthPanel mode="login" onClose={() => { window.location.hash = '#home' }} />
+        {panel === 'forgot' || panel === 'admin-reset' ? <Panels /> : <AuthPanel mode="login" onClose={() => { window.location.hash = '#home' }} />}
       </div>
     )
   }

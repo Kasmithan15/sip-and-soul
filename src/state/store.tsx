@@ -4,7 +4,7 @@ import { api } from '../lib/api'
 import type { MenuItem, SiteContent, User } from '../lib/types'
 
 export interface CartLine { productId: string; name: string; price: number; image: string; quantity: number }
-export type Panel = null | 'login' | 'register' | 'forgot' | 'cart' | 'account' | 'menu'
+export type Panel = null | 'login' | 'register' | 'forgot' | 'admin-reset' | 'cart' | 'account' | 'menu'
 
 interface Store {
   site: SiteContent

@@ -47,6 +47,10 @@ export function ForgotPanel() {
           <Field label="Email" type="email" inputMode="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={touched ? emailError : ''} placeholder="you@example.com" />
           <Submit busy={busy}>Send reset link</Submit>
           <button type="button" onClick={() => openPanel('login')} className="text-sm text-latte hover:text-roast">← Back to sign in</button>
+          <div className="mt-2 border-t border-line pt-4 text-center text-sm text-latte">
+            Café admin?{' '}
+            <button type="button" onClick={() => openPanel('admin-reset')} className="font-medium text-mocha underline-offset-4 hover:underline">Get a reset code by text message</button>
+          </div>
         </form>
       )}
     </Modal>

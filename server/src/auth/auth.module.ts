@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AdminGuard } from './admin.guard.js';
+import { AdminResetService } from './admin-reset.service.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
 import { JwtStrategy } from './jwt.strategy.js';
@@ -18,7 +19,7 @@ import { PasswordResetService } from './password-reset.service.js';
     }),
   ],
   controllers: [AuthController, PasswordResetController],
-  providers: [AuthService, JwtStrategy, AdminGuard, PasswordResetService],
+  providers: [AuthService, JwtStrategy, AdminGuard, PasswordResetService, AdminResetService],
   exports: [AuthService, AdminGuard],
 })
 export class AuthModule {}
