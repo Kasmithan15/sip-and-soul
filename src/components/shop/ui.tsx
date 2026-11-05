@@ -30,7 +30,7 @@ export function Modal({ title, onClose, children, drawer, wide }: { title: strin
   }, [])
 
   return (
-    <div className="fixed inset-0 z-[70] flex animate-[fade-in_.25s_ease] bg-espresso/60 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="fixed inset-0 z-[70] flex animate-[fade-in_.25s_ease] bg-espresso/35 backdrop-blur-md" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div
         ref={ref}
         role="dialog"
@@ -38,13 +38,13 @@ export function Modal({ title, onClose, children, drawer, wide }: { title: strin
         aria-label={title}
         className={drawer
           ? 'ml-auto flex h-full w-full max-w-[440px] animate-[slide-in_.35s_var(--ease-smooth)] flex-col bg-cream text-brown shadow-2xl'
-          : `m-auto flex max-h-[92svh] w-[calc(100%-2rem)] ${wide ? 'max-w-3xl' : 'max-w-md'} animate-[pop-in_.3s_var(--ease-smooth)] flex-col overflow-hidden rounded-2xl bg-cream text-brown shadow-2xl`}
+          : `m-auto flex max-h-[92svh] w-[calc(100%-2rem)] ${wide ? 'max-w-3xl' : 'max-w-md'} animate-[pop-in_.3s_var(--ease-smooth)] flex-col overflow-hidden rounded-[28px] bg-cream text-espresso shadow-[0_40px_90px_rgba(43,29,22,.3)]`}
       >
-        <div className="flex items-center justify-between border-b border-line px-6 py-4">
-          <h2 className="font-serif text-2xl text-roast">{title}</h2>
+        <div className="flex items-center justify-between px-7 pt-6 pb-3">
+          <h2 className="font-display text-3xl font-[900] tracking-tight text-espresso">{title}</h2>
           <button data-close aria-label="Close" onClick={onClose} className="grid size-9 place-items-center rounded-full text-xl text-latte transition hover:bg-cream-2 hover:text-roast">×</button>
         </div>
-        <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
+        <div className="flex-1 overflow-y-auto px-7 pt-2 pb-7">{children}</div>
       </div>
     </div>
   )
@@ -62,8 +62,8 @@ export function Field({ label, error, hint, className = '', ...input }: FieldPro
         aria-invalid={!!error}
         aria-describedby={error || hint ? `${id}-msg` : undefined}
         {...input}
-        className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-[15px] text-roast outline-none transition placeholder:text-latte/60
-          focus:border-mocha focus:ring-2 focus:ring-gold/40 ${error ? 'border-[#b4442f]' : 'border-line'}`}
+        className={`w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-roast outline-none transition placeholder:text-latte/60
+          focus:border-terra focus:ring-2 focus:ring-terra/25 ${error ? 'border-[#b4442f]' : 'border-line'}`}
       />
       {(error || hint) && <span id={`${id}-msg`} className={`mt-1 block text-xs ${error ? 'text-[#b4442f]' : 'text-latte'}`}>{error || hint}</span>}
     </div>
@@ -80,7 +80,7 @@ export function TextArea({ label, error, hint, ...input }: { label: string; erro
         aria-invalid={!!error}
         aria-describedby={error || hint ? `${id}-msg` : undefined}
         {...input}
-        className={`w-full resize-y rounded-lg border bg-white px-3.5 py-2.5 text-[15px] text-roast outline-none transition focus:border-mocha focus:ring-2 focus:ring-gold/40 ${error ? 'border-[#b4442f]' : 'border-line'}`}
+        className={`w-full resize-y rounded-xl border bg-white px-4 py-3 text-[15px] text-roast outline-none transition focus:border-terra focus:ring-2 focus:ring-terra/25 ${error ? 'border-[#b4442f]' : 'border-line'}`}
       />
       {(error || hint) && <span id={`${id}-msg`} className={`mt-1 block text-xs ${error ? 'text-[#b4442f]' : 'text-latte'}`}>{error || hint}</span>}
     </div>
@@ -109,7 +109,7 @@ export function Submit({ busy, children, className = '' }: { busy?: boolean; chi
     <button
       type="submit"
       disabled={busy}
-      className={`flex w-full items-center justify-center gap-2 rounded-full bg-roast px-6 py-3 text-[15px] font-medium text-cream transition hover:bg-mocha disabled:cursor-wait disabled:opacity-70 ${className}`}
+      className={`flex w-full items-center justify-center gap-2 rounded-full bg-espresso px-6 py-3.5 text-[15px] font-semibold text-cream transition hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70 ${className}`}
     >
       {busy && <span className="size-4 animate-spin rounded-full border-2 border-cream/40 border-t-cream" />}
       {children}

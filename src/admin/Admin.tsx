@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { BeanSolid } from '../components/Icons'
 import { AuthPanel } from '../components/shop/AuthPanel'
 import { Panels } from '../components/shop/Panels'
 import { useStore } from '../state/store'
@@ -11,37 +10,51 @@ import { Overview } from './Overview'
 import { SiteAdmin } from './SiteAdmin'
 
 const TABS = [
-  { id: 'overview', label: 'Overview', icon: '◎' },
-  { id: 'orders', label: 'Orders', icon: '☕' },
-  { id: 'reservations', label: 'Reservations', icon: '◷' },
-  { id: 'menu', label: 'Menu & prices', icon: '☰' },
-  { id: 'website', label: 'Website text', icon: '✎' },
-  { id: 'customers', label: 'Customers', icon: '☺' },
+  { id: 'overview', label: 'Overview', note: 'Today at a glance' },
+  { id: 'orders', label: 'Orders', note: 'Prepare and hand over orders' },
+  { id: 'reservations', label: 'Reservations', note: 'Table bookings and newsletter' },
+  { id: 'menu', label: 'Menu & prices', note: 'Drinks, beans, photos and prices' },
+  { id: 'website', label: 'Website text', note: 'Words, contact details and reviews' },
+  { id: 'customers', label: 'Customers', note: 'Accounts and password resets' },
 ] as const
 export type Tab = (typeof TABS)[number]['id']
+
+/** "SIP / SOUL" wordmark, the same as the website's, with an ADMIN tag. */
+function AdminLogo() {
+  return (
+    <a href="#top" className="flex items-baseline gap-1.5 font-display text-[22px] leading-none font-[800] tracking-tight text-espresso">
+      SIP<span className="mx-0.5 inline-block h-6 w-px rotate-[20deg] bg-current opacity-60" />SOUL
+      <span className="ml-1 rounded-full bg-terra px-2 py-0.5 font-sans text-[9px] font-semibold tracking-[.25em] text-white">ADMIN</span>
+    </a>
+  )
+}
+
+const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening' }
 
 export default function Admin() {
   const { user, logout, panel } = useStore()
   const [tab, setTab] = useState<Tab>('overview')
   const [navOpen, setNavOpen] = useState(false)
 
-  // Not signed in: the same sign-in form as the website, over the admin background.
+  // Not signed in: the same sign-in form as the website, over the cream admin background.
   if (!user) {
     return (
-      <div className="min-h-svh bg-espresso">
-        {panel === 'forgot' || panel === 'admin-reset' ? <Panels /> : <AuthPanel mode="login" onClose={() => { window.location.hash = '#home' }} />}
+      <div className="min-h-svh bg-cream">
+        <span aria-hidden className="fixed top-[12%] right-[10%] size-40 rounded-full bg-[radial-gradient(circle_at_35%_30%,#e08a63,#c0623b_55%,#8e4326)] opacity-80" />
+        <span aria-hidden className="fixed bottom-[10%] left-[8%] size-24 rounded-full bg-[radial-gradient(circle_at_35%_30%,#fffaf4,#e8dccd_60%,#cdb9a4)]" />
+        {panel === 'forgot' || panel === 'admin-reset' ? <Panels /> : <AuthPanel mode="login" onClose={() => { window.location.hash = '#top' }} />}
       </div>
     )
   }
   if (user.role !== 'admin') {
     return (
-      <div className="grid min-h-svh place-items-center bg-espresso px-4 text-center text-cream">
+      <div className="grid min-h-svh place-items-center bg-cream px-4 text-center text-espresso">
         <div>
-          <h1 className="font-serif text-3xl">Admin access only</h1>
-          <p className="mt-2 text-cream/70">You're signed in as {user.email}, which is a customer account.</p>
-          <div className="mt-6 flex justify-center gap-3">
-            <a href="#home" className="rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-roast">Back to the website</a>
-            <button onClick={logout} className="rounded-full border border-cream/40 px-5 py-2.5 text-sm">Sign out</button>
+          <h1 className="font-display text-5xl font-[900]">Admin access only</h1>
+          <p className="mt-3 text-latte">You're signed in as {user.email}, which is a customer account.</p>
+          <div className="mt-7 flex justify-center gap-3">
+            <a href="#top" className="rounded-full bg-espresso px-6 py-3 text-sm font-semibold text-cream">Back to the website</a>
+            <button onClick={logout} className="rounded-full border border-espresso px-6 py-3 text-sm font-semibold">Sign out</button>
           </div>
         </div>
       </div>
@@ -50,44 +63,44 @@ export default function Admin() {
 
   const current = TABS.find((t) => t.id === tab)!
   return (
-    <div className="min-h-svh bg-[#f7f2ec] text-brown lg:grid lg:grid-cols-[250px_1fr]">
-      <aside className={`fixed inset-y-0 left-0 z-40 w-[250px] bg-espresso text-cream transition-transform lg:static lg:translate-x-0 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center gap-3 border-b border-white/10 px-6 py-6">
-          <BeanSolid className="size-6 text-gold" />
-          <div className="leading-tight">
-            <p className="font-serif tracking-[.18em]">SIP &amp; SOUL</p>
-            <p className="text-[10px] tracking-[.3em] text-gold">ADMIN</p>
-          </div>
-        </div>
-        <nav className="grid gap-1 p-3">
+    <div className="min-h-svh bg-cream text-espresso lg:grid lg:grid-cols-[272px_1fr]">
+      <aside className={`fixed inset-y-0 left-0 z-40 flex w-[272px] flex-col bg-cream-2 transition-transform lg:sticky lg:top-0 lg:h-svh lg:translate-x-0 ${navOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
+        <div className="px-7 pt-8 pb-6"><AdminLogo /><p className="mt-2 text-xs text-latte">Sip &amp; Soul Café</p></div>
+        <nav aria-label="Admin" className="grid gap-1.5 px-4">
           {TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => { setTab(t.id); setNavOpen(false) }}
               aria-current={tab === t.id}
-              className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm transition ${tab === t.id ? 'bg-gold text-roast' : 'text-cream/80 hover:bg-white/5 hover:text-cream'}`}
+              className={`flex items-center gap-3 rounded-full px-5 py-3 text-left text-[15px] font-semibold transition ${tab === t.id ? 'bg-espresso text-cream shadow-[0_10px_24px_rgba(43,29,22,.25)]' : 'text-espresso/75 hover:bg-sand/50 hover:text-espresso'}`}
             >
-              <span aria-hidden className="w-4 text-center">{t.icon}</span>
+              <span aria-hidden className={`size-2 rounded-full ${tab === t.id ? 'bg-terra' : 'bg-espresso/20'}`} />
               {t.label}
             </button>
           ))}
         </nav>
-        <div className="absolute inset-x-0 bottom-0 border-t border-white/10 p-4 text-xs text-cream/60">
-          <p className="truncate">{user.email}</p>
-          <button onClick={logout} className="mt-2 text-cream/80 hover:text-gold">Sign out</button>
+        <div className="mt-auto p-4">
+          <div className="flex items-center gap-3 rounded-3xl bg-cream p-3">
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-terra font-display text-lg font-[800] text-white">{user.name[0]}</span>
+            <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{user.name}</p><p className="truncate text-xs text-latte">{user.email}</p></div>
+            <button onClick={logout} aria-label="Sign out" title="Sign out" className="grid size-9 place-items-center rounded-full text-latte hover:bg-sand/60 hover:text-espresso">⎋</button>
+          </div>
         </div>
       </aside>
-      {navOpen && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setNavOpen(false)} />}
+      {navOpen && <div className="fixed inset-0 z-30 bg-espresso/30 lg:hidden" onClick={() => setNavOpen(false)} />}
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-[#f7f2ec]/90 px-5 py-4 backdrop-blur sm:px-8">
-          <div className="flex items-center gap-3">
-            <button aria-label="Open menu" onClick={() => setNavOpen(true)} className="text-2xl lg:hidden">☰</button>
-            <h1 className="font-serif text-2xl text-roast">{current.label}</h1>
+        <header className="sticky top-0 z-20 flex flex-wrap items-end justify-between gap-4 bg-cream/85 px-5 pt-6 pb-5 backdrop-blur-xl sm:px-10 sm:pt-8">
+          <div className="flex items-end gap-3">
+            <button aria-label="Open menu" onClick={() => setNavOpen(true)} className="mb-1 grid size-10 place-items-center rounded-full bg-cream-2 lg:hidden">☰</button>
+            <div>
+              <p className="text-sm text-latte">{tab === 'overview' ? `${greeting()}, ${user.name.split(' ')[0]}` : current.note}</p>
+              <h1 className="font-display text-4xl leading-none font-[900] tracking-tight sm:text-5xl">{current.label}</h1>
+            </div>
           </div>
-          <a href="#home" className="rounded-full border border-line bg-white px-4 py-2 text-sm text-roast transition hover:border-mocha">View website ↗</a>
+          <a href="#top" className="rounded-full bg-espresso px-5 py-2.5 text-sm font-semibold text-cream transition hover:scale-[1.04]">View website ↗</a>
         </header>
-        <main className="p-5 sm:p-8">
+        <main className="px-5 pt-2 pb-12 sm:px-10">
           {tab === 'overview' && <Overview go={setTab} />}
           {tab === 'orders' && <OrdersAdmin />}
           {tab === 'reservations' && <ReservationsAdmin />}

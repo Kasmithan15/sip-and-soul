@@ -38,15 +38,15 @@ export function ReservationsAdmin() {
       {error && <p role="alert" className="text-[#b4442f]">{error}</p>}
       <section className="grid gap-4">
         <div className="flex gap-2">
-          {(['upcoming', 'past'] as const).map((t) => <button key={t} onClick={() => setShow(t)} className={`rounded-full px-4 py-2 text-sm capitalize ${show === t ? 'bg-roast text-cream' : 'border border-line bg-white'}`}>{t}</button>)}
+          {(['upcoming', 'past'] as const).map((t) => <button key={t} onClick={() => setShow(t)} className={`rounded-full px-4 py-2 text-sm capitalize ${show === t ? 'bg-espresso text-cream' : 'bg-white hover:bg-sand/50'}`}>{t}</button>)}
         </div>
-        {!list ? <p className="text-latte">Loading reservations…</p> : !shown.length ? <p className="rounded-2xl border border-line bg-white px-5 py-10 text-center text-latte">No {show} reservations.</p> : (
+        {!list ? <p className="text-latte">Loading reservations…</p> : !shown.length ? <p className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] px-5 py-10 text-center text-latte">No {show} reservations.</p> : (
           <div className="grid gap-4 xl:grid-cols-2">
             {shown.map((r) => (
-              <article key={r.id} className="rounded-2xl border border-line bg-white p-5">
+              <article key={r.id} className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="font-serif text-xl text-roast">{new Date(r.date + 'T00:00').toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })} · {r.time} · {r.guests} {r.guests === 1 ? 'guest' : 'guests'}</p>
+                    <p className="font-display text-2xl font-[800] tracking-tight text-espresso">{new Date(r.date + 'T00:00').toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })} · {r.time} · {r.guests} {r.guests === 1 ? 'guest' : 'guests'}</p>
                     <p className="text-sm">{r.name} · <a className="text-mocha hover:underline" href={`tel:${r.phone.replace(/[^\d+]/g, '')}`}>{r.phone}</a> · {r.email}</p>
                   </div>
                   <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${STYLE[r.status]}`}>{r.status}</span>
@@ -63,9 +63,9 @@ export function ReservationsAdmin() {
           </div>
         )}
       </section>
-      <section className="rounded-2xl border border-line bg-white">
+      <section className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)]">
         <div className="flex items-center justify-between border-b border-line px-5 py-4">
-          <h2 className="font-serif text-xl text-roast">Newsletter subscribers <span className="text-sm text-latte">({subs.length})</span></h2>
+          <h2 className="font-display text-2xl font-[800] tracking-tight text-espresso">Newsletter subscribers <span className="text-sm text-latte">({subs.length})</span></h2>
           {subs.length > 0 && <button onClick={() => navigator.clipboard.writeText(subs.map((s) => s.email).join(', '))} className="text-sm text-mocha hover:underline">Copy all emails</button>}
         </div>
         {!subs.length ? <p className="px-5 py-8 text-center text-latte">No subscribers yet.</p> : (

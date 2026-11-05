@@ -46,19 +46,19 @@ export function OrdersAdmin() {
     <div className="grid gap-5">
       <div className="flex flex-wrap gap-2">
         {FILTERS.map((f) => (
-          <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-4 py-2 text-sm capitalize transition ${filter === f ? 'bg-roast text-cream' : 'border border-line bg-white text-brown hover:border-mocha'}`}>
+          <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-4 py-2 text-sm capitalize transition ${filter === f ? 'bg-espresso text-cream shadow-[0_8px_20px_rgba(43,29,22,.2)]' : 'bg-white text-espresso hover:bg-sand/50'}`}>
             {f === 'open' ? 'Open' : f === 'all' ? 'All' : STATUS_LABEL[f]} <span className="opacity-60">({count(f)})</span>
           </button>
         ))}
       </div>
       {error && <p role="alert" className="text-[#b4442f]">{error}</p>}
-      {!orders ? <p className="text-latte">Loading orders…</p> : !shown.length ? <p className="rounded-2xl border border-line bg-white px-5 py-10 text-center text-latte">No orders here.</p> : (
+      {!orders ? <p className="text-latte">Loading orders…</p> : !shown.length ? <p className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] px-5 py-10 text-center text-latte">No orders here.</p> : (
         <div className="grid gap-4 xl:grid-cols-2">
           {shown.map((o) => (
-            <article key={o.id} className="rounded-2xl border border-line bg-white p-5">
+            <article key={o.id} className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="font-serif text-xl text-roast">#{o.number} · {o.user?.name}</p>
+                  <p className="font-display text-2xl font-[800] tracking-tight text-espresso">#{o.number} · {o.user?.name}</p>
                   <p className="text-xs text-latte">{new Date(o.createdAt).toLocaleString()} · {o.user?.email}</p>
                 </div>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLE[o.status]}`}>{STATUS_LABEL[o.status]}</span>

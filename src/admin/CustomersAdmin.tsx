@@ -86,8 +86,8 @@ export function CustomersAdmin() {
   return (
     <div className="grid gap-5">
       {requests.length > 0 && (
-        <section className="rounded-2xl border border-gold bg-white">
-          <h2 className="border-b border-line px-5 py-4 font-serif text-xl text-roast">Password reset requests <span className="ml-1 rounded-full bg-gold/30 px-2 py-0.5 font-sans text-xs text-roast">{requests.length}</span></h2>
+        <section className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] ring-2 ring-terra/40">
+          <h2 className="border-b border-line px-5 py-4 font-display text-2xl font-[800] tracking-tight text-espresso">Password reset requests <span className="ml-1 rounded-full bg-gold/30 px-2 py-0.5 font-sans text-xs text-roast">{requests.length}</span></h2>
           <ul className="divide-y divide-line">
             {requests.map((r) => (
               <li key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3 text-sm">
@@ -108,13 +108,13 @@ export function CustomersAdmin() {
         placeholder="Search by name, email or phone…"
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        className="w-full max-w-md rounded-full border border-line bg-white px-5 py-2.5 text-sm outline-none focus:border-mocha focus:ring-2 focus:ring-gold/40"
+        className="w-full max-w-md rounded-full bg-white px-6 py-3 shadow-[0_8px_24px_rgba(43,29,22,.06)] text-sm outline-none focus:border-mocha focus:ring-2 focus:ring-gold/40"
       />
       {error && <p role="alert" className="text-[#b4442f]">{error}</p>}
       {!list ? <p className="text-latte">Loading customers…</p> : (
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+        <div className="overflow-x-auto rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)]">
           <table className="w-full min-w-[680px] text-sm">
-            <thead className="bg-cream text-left text-xs tracking-wide text-latte uppercase">
+            <thead className="bg-cream-2/70 text-left text-[11px] font-semibold tracking-[.15em] text-latte uppercase">
               <tr><th className="px-4 py-3">Name</th><th className="px-4 py-3">Contact</th><th className="px-4 py-3">Joined</th><th className="px-4 py-3">Orders</th><th className="px-4 py-3">Status</th><th className="px-4 py-3" /></tr>
             </thead>
             <tbody className="divide-y divide-line">

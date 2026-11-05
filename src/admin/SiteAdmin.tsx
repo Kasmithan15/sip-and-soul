@@ -38,8 +38,8 @@ function validate(s: SiteContent) {
 
 function Card({ title, note, children }: { title: string; note?: string; children: ReactNode }) {
   return (
-    <section className="rounded-2xl border border-line bg-white p-6">
-      <h2 className="font-serif text-xl text-roast">{title}</h2>
+    <section className="rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)] p-6">
+      <h2 className="font-display text-2xl font-[800] tracking-tight text-espresso">{title}</h2>
       {note && <p className="mt-1 text-sm text-latte">{note}</p>}
       <div className="mt-5 grid gap-4">{children}</div>
     </section>
@@ -180,10 +180,10 @@ export function SiteAdmin() {
         )}
       </Card>
 
-      <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-end gap-3 rounded-2xl border border-line bg-white/95 p-4 shadow-lg backdrop-blur">
-        <span className="mr-auto text-sm text-latte">{dirty ? 'You have unsaved changes.' : 'All changes saved.'}</span>
-        <button type="button" disabled={!dirty || busy} onClick={() => { setS(saved); setTouched(false); setServer({}); setMsg(null) }} className="rounded-full px-5 py-2.5 text-sm text-latte hover:text-roast disabled:opacity-40">Undo changes</button>
-        <div className="w-44"><Submit busy={busy}>Save changes</Submit></div>
+      <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-end gap-3 rounded-full bg-espresso/95 py-3 pr-3 pl-6 text-cream shadow-[0_18px_40px_rgba(43,29,22,.3)] backdrop-blur">
+        <span className="mr-auto text-sm text-cream/75">{dirty ? 'You have unsaved changes.' : 'All changes saved.'}</span>
+        <button type="button" disabled={!dirty || busy} onClick={() => { setS(saved); setTouched(false); setServer({}); setMsg(null) }} className="rounded-full px-5 py-2.5 text-sm text-cream/75 hover:text-cream disabled:opacity-40">Undo changes</button>
+        <div className="w-44"><Submit busy={busy} className="!bg-terra hover:!bg-terra-dark">Save changes</Submit></div>
       </div>
     </form>
   )

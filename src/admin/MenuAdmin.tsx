@@ -139,13 +139,13 @@ export function MenuAdmin() {
     <div className="grid gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-latte">Drinks marked “On homepage” appear in Coffee Favorites (up to 8). All available drinks appear in the full menu.</p>
-        <button onClick={() => setEditing(blank((items?.length ?? 0)))} className="rounded-full bg-roast px-5 py-2.5 text-sm font-medium text-cream transition hover:bg-mocha">+ Add a drink</button>
+        <button onClick={() => setEditing(blank((items?.length ?? 0)))} className="rounded-full bg-espresso px-6 py-3 text-sm font-semibold text-cream shadow-[0_10px_24px_rgba(43,29,22,.22)] transition hover:scale-[1.04]">+ Add a drink</button>
       </div>
       {error && <p role="alert" className="text-[#b4442f]">{error}</p>}
       {!items ? <p className="text-latte">Loading menu…</p> : (
-        <div className="overflow-hidden rounded-2xl border border-line bg-white">
+        <div className="overflow-hidden rounded-3xl bg-white shadow-[0_12px_32px_rgba(43,29,22,.07)]">
           <table className="w-full text-sm">
-            <thead className="bg-cream text-left text-xs tracking-wide text-latte uppercase">
+            <thead className="bg-cream-2/70 text-left text-[11px] font-semibold tracking-[.15em] text-latte uppercase">
               <tr><th className="px-4 py-3">Drink</th><th className="px-4 py-3">Price</th><th className="hidden px-4 py-3 md:table-cell">Available</th><th className="hidden px-4 py-3 md:table-cell">On homepage</th><th className="px-4 py-3" /></tr>
             </thead>
             <tbody className="divide-y divide-line">
@@ -178,7 +178,7 @@ export function MenuAdmin() {
 
 function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <button role="switch" aria-checked={on} aria-label={label} onClick={() => onChange(!on)} className={`relative h-6 w-11 rounded-full transition ${on ? 'bg-[#4d8a5a]' : 'bg-line'}`}>
+    <button role="switch" aria-checked={on} aria-label={label} onClick={() => onChange(!on)} className={`relative h-6 w-11 rounded-full transition ${on ? 'bg-terra' : 'bg-line'}`}>
       <span className={`absolute top-0.5 size-5 rounded-full bg-white shadow transition-all ${on ? 'left-[22px]' : 'left-0.5'}`} />
     </button>
   )
