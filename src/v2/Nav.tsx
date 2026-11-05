@@ -37,18 +37,17 @@ export function Nav() {
         <Logo />
         <nav aria-label="Main" className="hidden items-center gap-8 text-[15px] font-medium text-espresso md:flex">
           {links.map((l) => <a key={l.label} href={l.href} className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-terra after:transition-transform hover:after:scale-x-100">{l.label}</a>)}
-          <button onClick={account} className="hover:text-terra">{user ? (user.role === 'admin' ? 'Admin' : user.name.split(' ')[0]) : 'Log in'}</button>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
           <button aria-label={`Cart, ${cartCount} items`} onClick={() => openPanel('cart')} className="relative grid size-11 place-items-center rounded-full text-espresso transition hover:bg-sand/50">
             <CartIcon className="size-[22px]" />
             {cartCount > 0 && <span key={cartCount} className="absolute top-1 right-0.5 grid min-w-[18px] animate-bump place-items-center rounded-full bg-terra px-1 text-[10px] font-semibold text-white">{cartCount}</span>}
           </button>
-          {user ? (
-            <button onClick={account} className="hidden rounded-full bg-espresso px-5 py-2.5 text-sm font-semibold text-cream transition hover:scale-[1.04] sm:block">{user.role === 'admin' ? 'Admin panel' : 'My account'}</button>
-          ) : (
-            <button onClick={() => openPanel('register')} className="hidden rounded-full bg-espresso px-5 py-2.5 text-sm font-semibold text-cream transition hover:scale-[1.04] sm:block">Sign up</button>
-          )}
+          {/* One login button for customers and staff; admins land in the admin panel after signing in. */}
+          <button onClick={account} className="hidden items-center gap-2 rounded-full bg-espresso px-5 py-2.5 text-sm font-semibold text-cream transition hover:scale-[1.04] sm:flex">
+            {user && <span className="grid size-5 place-items-center rounded-full bg-terra text-[11px] text-white">{user.name[0]}</span>}
+            {user ? user.name.split(' ')[0] : 'Log in'}
+          </button>
           <button aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="grid size-11 place-items-center rounded-full md:hidden">
             <span className="grid gap-1.5"><span className={`block h-0.5 w-6 bg-espresso transition ${open ? 'translate-y-2 rotate-45' : ''}`} /><span className={`block h-0.5 w-6 bg-espresso transition ${open ? 'opacity-0' : ''}`} /><span className={`block h-0.5 w-6 bg-espresso transition ${open ? '-translate-y-2 -rotate-45' : ''}`} /></span>
           </button>
@@ -57,10 +56,7 @@ export function Nav() {
       {open && (
         <nav aria-label="Mobile" className="mx-4 mt-3 grid gap-1 rounded-3xl bg-cream p-4 shadow-xl md:hidden">
           {links.map((l) => <a key={l.label} href={l.href} onClick={() => setOpen(false)} className="rounded-2xl px-4 py-3 font-display text-2xl font-[700] text-espresso hover:bg-sand/40">{l.label}</a>)}
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <button onClick={() => { setOpen(false); account() }} className="rounded-full border border-espresso px-4 py-3 text-sm font-semibold">{user ? 'My account' : 'Log in'}</button>
-            {!user && <button onClick={() => { setOpen(false); openPanel('register') }} className="rounded-full bg-espresso px-4 py-3 text-sm font-semibold text-cream">Sign up</button>}
-          </div>
+          <button onClick={() => { setOpen(false); account() }} className="mt-2 rounded-full bg-espresso px-4 py-3 text-sm font-semibold text-cream">{user ? user.name.split(' ')[0] : 'Log in'}</button>
         </nav>
       )}
     </header>

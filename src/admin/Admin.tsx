@@ -19,12 +19,11 @@ const TABS = [
 ] as const
 export type Tab = (typeof TABS)[number]['id']
 
-/** "SIP / SOUL" wordmark, the same as the website's, with an ADMIN tag. */
+/** "SIP / SOUL" wordmark, the same as the website's. */
 function AdminLogo() {
   return (
     <a href="#top" className="flex items-baseline gap-1.5 font-display text-[22px] leading-none font-[800] tracking-tight text-espresso">
       SIP<span className="mx-0.5 inline-block h-6 w-px rotate-[20deg] bg-current opacity-60" />SOUL
-      <span className="ml-1 rounded-full bg-terra px-2 py-0.5 font-sans text-[9px] font-semibold tracking-[.25em] text-white">ADMIN</span>
     </a>
   )
 }
