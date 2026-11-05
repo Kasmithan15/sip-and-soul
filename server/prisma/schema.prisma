@@ -31,6 +31,7 @@ model User {
   createdAt         DateTime  @default(now()) @map("created_at")
   passwordChangedAt DateTime? @map("password_changed_at")
   orders            Order[]
+  passwordResets    PasswordReset[]
 
   @@map("users")
 }
@@ -84,4 +85,19 @@ model Image {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("images")
+}
+
+/// A customer's "forgot password" request (tokenHash empty, waiting for the admin)
+/// or an issued one-time reset link (only the SHA-256 of the token is stored).
+model PasswordReset {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String?   @unique @map("token_hash")
+  expiresAt DateTime? @map("expires_at")
+  emailed   Boolean   @default(false)
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("password_resets")
 }

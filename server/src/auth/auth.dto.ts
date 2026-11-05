@@ -68,3 +68,22 @@ export class ChangePasswordDto {
   @Matches(PASSWORD_PATTERN, { message: 'New password must contain at least one letter and one number.' })
   newPassword!: string;
 }
+
+export class ForgotPasswordDto {
+  @Transform(lower)
+  @IsEmail({}, { message: 'Enter a valid email address.' })
+  @MaxLength(254)
+  email!: string;
+}
+
+export class ResetPasswordDto {
+  @IsString()
+  @Length(20, 100, { message: 'This reset link is not valid. Please request a new one.' })
+  token!: string;
+
+  @IsString()
+  @MinLength(8, { message: 'Password must be at least 8 characters.' })
+  @MaxLength(72, { message: 'Password must be 72 characters or fewer.' })
+  @Matches(PASSWORD_PATTERN, { message: 'Password must contain at least one letter and one number.' })
+  password!: string;
+}

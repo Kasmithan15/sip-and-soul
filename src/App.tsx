@@ -6,6 +6,7 @@ import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { Panels } from './components/shop/Panels'
+import { ResetPasswordPage } from './components/shop/ResetPasswordPage'
 import { Signature } from './components/Signature'
 import { Stats } from './components/Stats'
 import { Story } from './components/Story'
@@ -14,7 +15,8 @@ import { StoreProvider } from './state/store'
 // The admin panel only loads for people who open it.
 const Admin = lazy(() => import('./admin/Admin'))
 
-const isAdminRoute = () => window.location.hash.startsWith('#/admin')
+type Route = 'site' | 'admin' | 'reset'
+const routeFromHash = (): Route => (window.location.hash.startsWith('#/admin') ? 'admin' : window.location.hash.startsWith('#/reset-password') ? 'reset' : 'site')
 
 function Site() {
   // The 3D bean intro stays until the visitor clicks, then the site shows straight away.
@@ -45,17 +47,19 @@ function Site() {
 }
 
 export default function App() {
-  const [admin, setAdmin] = useState(isAdminRoute)
+  const [route, setRoute] = useState(routeFromHash)
 
   useEffect(() => {
-    const onHash = () => setAdmin(isAdminRoute())
+    const onHash = () => setRoute(routeFromHash())
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
   return (
     <StoreProvider>
-      {admin ? (
+      {route === 'reset' ? (
+        <ResetPasswordPage />
+      ) : route === 'admin' ? (
         <Suspense fallback={<div className="grid min-h-svh place-items-center bg-espresso text-cream">Loading admin…</div>}>
           <Admin />
         </Suspense>

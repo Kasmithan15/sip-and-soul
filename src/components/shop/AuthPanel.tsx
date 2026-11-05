@@ -82,6 +82,11 @@ export function AuthPanel({ mode, onClose }: { mode: 'login' | 'register'; onClo
           error={show('password')}
           hint={register ? 'At least 8 characters, with letters and numbers.' : undefined}
         />
+        {!register && (
+          <button type="button" onClick={() => openPanel('forgot')} className="-mt-2 justify-self-end text-sm font-medium text-mocha underline-offset-4 hover:underline">
+            Forgot password?
+          </button>
+        )}
         {register && form.password && (
           <div aria-live="polite" className="-mt-2 flex items-center gap-2 text-xs text-latte">
             <div className="flex flex-1 gap-1">

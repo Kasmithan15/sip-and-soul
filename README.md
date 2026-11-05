@@ -18,6 +18,7 @@ Designed & developed by **Neirah Tech Solution (Pvt) Ltd.** · +94 76 004 1594 �
 - Add drinks to the cart, change quantities, and order for pickup or delivery.
 - Follow their orders (received → preparing → ready → completed) and cancel while an order is still pending.
 - Update their name and phone, and change their password (this signs out their other devices).
+- Reset a forgotten password with **Forgot password?** on the sign-in form. The reset link works once, expires after 1 hour, and signs the customer out everywhere.
 
 ### The admin can
 
@@ -26,6 +27,7 @@ Designed & developed by **Neirah Tech Solution (Pvt) Ltd.** · +94 76 004 1594 �
 - Add, edit and delete drinks: name, description, price, photo upload, availability and whether the drink shows on the homepage.
 - Edit all website text and the contact details in the footer.
 - Search customers, and block, unblock or delete their accounts.
+- Answer password reset requests: create a one-time reset link and send it by WhatsApp or copy it. This is used when no email service is set up.
 
 ### Validation and security
 
@@ -76,6 +78,7 @@ The server also serves the built website, so the whole site runs as one Railway 
 
 4. Under **Settings → Networking**, click **Generate Domain**.
 5. Deploy. `railway.json` builds the website and server, runs the database migrations, adds the starter drinks and creates the admin account.
-6. After the first successful deploy, remove `ADMIN_PASSWORD` (and `ADMIN_EMAIL`) from the variables. Otherwise the admin password is reset on every deploy.
+6. Optional: to email reset links automatically, create a free [Resend](https://resend.com) account and add `RESEND_API_KEY` and `MAIL_FROM` (for example `Sip & Soul Café <no-reply@yourdomain.com>`). Without them, reset requests appear in **Admin → Customers**.
+7. After the first successful deploy, remove `ADMIN_PASSWORD` (and `ADMIN_EMAIL`) from the variables. Otherwise the admin password is reset on every deploy.
 
 The GitHub Pages copy (`deploy.sh`) is a static preview only. It shows the site but cannot sign in or take orders.

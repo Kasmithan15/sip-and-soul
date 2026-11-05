@@ -6,6 +6,8 @@ import { AdminGuard } from './admin.guard.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
 import { JwtStrategy } from './jwt.strategy.js';
+import { PasswordResetController } from './password-reset.controller.js';
+import { PasswordResetService } from './password-reset.service.js';
 
 @Module({
   imports: [
@@ -15,8 +17,8 @@ import { JwtStrategy } from './jwt.strategy.js';
       useFactory: (config: ConfigService) => ({ secret: config.getOrThrow<string>('JWT_SECRET') }),
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, AdminGuard],
+  controllers: [AuthController, PasswordResetController],
+  providers: [AuthService, JwtStrategy, AdminGuard, PasswordResetService],
   exports: [AuthService, AdminGuard],
 })
 export class AuthModule {}
