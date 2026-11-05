@@ -18,6 +18,7 @@ export interface SiteContent {
   story: { eyebrow: string; title: string; text: string; tagline: string }
   stats: { value: number; suffix: string; label: string; decimals: number }[]
   cta: { eyebrow: string; title: string }
+  visit: { eyebrow: string; title: string }
   contact: { phone: string; email: string; address: string; hours: string }
   reviews: { name: string; text: string; rating: number }[]
 }

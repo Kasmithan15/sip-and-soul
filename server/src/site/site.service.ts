@@ -11,7 +11,7 @@ export class SiteService {
     const row = await this.prisma.siteContent.findUnique({ where: { key: 'website' } });
     // Merge over the defaults so newly added fields always have a value.
     const saved = (row?.data ?? {}) as Partial<SiteContent>;
-    return { ...siteDefaults, ...saved, hero: { ...siteDefaults.hero, ...saved.hero }, contact: { ...siteDefaults.contact, ...saved.contact }, reviews: saved.reviews ?? [] };
+    return { ...siteDefaults, ...saved, hero: { ...siteDefaults.hero, ...saved.hero }, contact: { ...siteDefaults.contact, ...saved.contact }, visit: { ...siteDefaults.visit, ...saved.visit }, reviews: saved.reviews ?? [] };
   }
 
   async save(input: SiteContentDto) {

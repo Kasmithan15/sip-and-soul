@@ -31,6 +31,7 @@ export const siteDefaults = {
     { value: 4.9, suffix: '★', label: 'Customer Rating', decimals: 1 },
   ],
   cta: { eyebrow: 'READY FOR A BETTER COFFEE EXPERIENCE?', title: 'Your Perfect Cup Awaits' },
+  visit: { eyebrow: 'VISIT US', title: 'Come in, slow down' },
   contact: {
     phone: '+94 76 004 1594',
     email: 'info@neirahtech.com',

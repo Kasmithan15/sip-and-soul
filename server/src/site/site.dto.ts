@@ -34,6 +34,11 @@ class CtaDto {
   @Transform(trim) @IsString() @text(1, 80, 'Call-to-action small heading') eyebrow!: string;
   @Transform(trim) @IsString() @text(1, 60, 'Call-to-action title') title!: string;
 }
+class VisitDto {
+  @Transform(trim) @IsString() @text(1, 40, 'Visit us small heading') eyebrow!: string;
+  @Transform(trim) @IsString() @text(1, 60, 'Visit us title') title!: string;
+}
+
 class ContactDto {
   @Transform(trim) @Matches(PHONE_PATTERN, { message: 'Enter a valid contact phone number.' }) phone!: string;
   @Transform(trim) @IsEmail({}, { message: 'Enter a valid contact email.' }) @MaxLength(254) email!: string;
@@ -55,6 +60,7 @@ export class SiteContentDto {
   @ValidateNested() @Type(() => StoryDto) story!: StoryDto;
   @ValidateNested({ each: true }) @Type(() => StatDto) @ArrayMinSize(4) @ArrayMaxSize(4) stats!: StatDto[];
   @ValidateNested() @Type(() => CtaDto) cta!: CtaDto;
+  @ValidateNested() @Type(() => VisitDto) visit!: VisitDto;
   @ValidateNested() @Type(() => ContactDto) contact!: ContactDto;
   @ValidateNested({ each: true }) @Type(() => ReviewDto) @ArrayMaxSize(6, { message: 'Up to 6 reviews.' }) reviews!: ReviewDto[];
 }

@@ -69,15 +69,15 @@ export function OurStory() {
 }
 
 export function VisitUs() {
-  const { contact } = useStore().site
+  const { contact, visit } = useStore().site
   const tel = `tel:${contact.phone.replace(/[^\d+]/g, '')}`
   const q = encodeURIComponent(contact.address)
   return (
     <section id="visit" aria-labelledby="visit-title" className="bg-cream py-24">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.4fr]">
         <div>
-          <p data-reveal className="text-sm font-semibold tracking-[.3em] text-terra">VISIT US</p>
-          <h2 id="visit-title" data-reveal className="mt-2 font-display text-5xl font-[900] tracking-tight md:text-6xl">Come in, slow down</h2>
+          <p data-reveal className="text-sm font-semibold tracking-[.3em] text-terra uppercase">{visit.eyebrow}</p>
+          <h2 id="visit-title" data-reveal className="mt-2 font-display text-5xl font-[900] tracking-tight md:text-6xl">{visit.title}</h2>
           <dl data-reveal className="mt-8 grid gap-5 text-[16px]">
             <div><dt className="text-sm text-latte">Address</dt><dd className="mt-1 font-semibold">{contact.address || 'Address coming soon'}</dd></div>
             <div><dt className="text-sm text-latte">Opening hours</dt><dd className="mt-1 font-semibold">{contact.hours || 'Call us for today’s opening hours'}</dd></div>

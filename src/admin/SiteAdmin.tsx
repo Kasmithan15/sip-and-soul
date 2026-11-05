@@ -28,6 +28,7 @@ function validate(s: SiteContent) {
     len(`stats.${i}.label`, st.label, 1, 40, 'Label')
   })
   len('cta.eyebrow', s.cta.eyebrow, 1, 80, 'Small heading'); len('cta.title', s.cta.title, 1, 60, 'Title')
+  len('visit.eyebrow', s.visit.eyebrow, 1, 40, 'Small heading'); len('visit.title', s.visit.title, 1, 60, 'Title')
   if (!PHONE.test(s.contact.phone.trim())) e['contact.phone'] = 'Enter a valid phone number, for example 077 123 4567.'
   if (!EMAIL.test(s.contact.email.trim())) e['contact.email'] = 'Enter a valid email address.'
   if (s.contact.address.length > 160) e['contact.address'] = 'Address must be 160 characters or fewer.'
@@ -92,14 +93,22 @@ export function SiteAdmin() {
     <form noValidate onSubmit={save} className="grid max-w-4xl gap-6">
       {msg && <Alert tone={msg.tone}>{msg.text}</Alert>}
 
-      <Card title="Contact details" note="Shown in the footer under “Get in touch”.">
+      <Card title="Contact details" note="Phone and email, shown in Visit us and the footer.">
         <div className="grid gap-4 sm:grid-cols-2">
           {field('Phone', 'contact.phone', s.contact.phone, (v) => up((d) => { d.contact.phone = v }), 22)}
           {field('Email', 'contact.email', s.contact.email, (v) => up((d) => { d.contact.email = v }), 254)}
-          {field('Address (optional)', 'contact.address', s.contact.address, (v) => up((d) => { d.contact.address = v }), 160)}
-          {field('Opening hours (optional)', 'contact.hours', s.contact.hours, (v) => up((d) => { d.contact.hours = v }), 120)}
         </div>
         <div className="max-w-[160px]">{field('Currency symbol', 'currency', s.currency, (v) => up((d) => { d.currency = v }), 4)}</div>
+      </Card>
+
+      <Card title="Visit us section" note="The “Visit us” part of the homepage, with the map. The address and hours also show in the footer.">
+        <div className="grid gap-4 sm:grid-cols-2">
+          {field('Small heading', 'visit.eyebrow', s.visit.eyebrow, (v) => up((d) => { d.visit.eyebrow = v }), 40)}
+          {field('Title', 'visit.title', s.visit.title, (v) => up((d) => { d.visit.title = v }), 60)}
+        </div>
+        {field('Café address (shows the map and “Get directions”)', 'contact.address', s.contact.address, (v) => up((d) => { d.contact.address = v }), 160)}
+        {field('Opening hours', 'contact.hours', s.contact.hours, (v) => up((d) => { d.contact.hours = v }), 120)}
+        <p className="-mt-2 text-xs text-latte">Example: Mon–Fri 7:00–20:00 · Sat–Sun 8:00–22:00</p>
       </Card>
 
       <Card title="Top of the page (hero)">
