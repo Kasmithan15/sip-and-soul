@@ -3,6 +3,7 @@ import { Password, Profile } from '../components/shop/AccountPanel'
 import { AuthPanel } from '../components/shop/AuthPanel'
 import { Avatar } from '../components/shop/ui'
 import { Logo } from '../v2/Brand'
+import { DEMO, resetDemo } from '../lib/demoApi'
 import { Panels } from '../components/shop/Panels'
 import { useStore } from '../state/store'
 import { CustomersAdmin } from './CustomersAdmin'
@@ -74,6 +75,12 @@ export default function Admin() {
           ))}
         </nav>
         <div className="mt-auto p-4">
+          {DEMO && (
+            <div className="mb-3 rounded-2xl bg-sand/50 px-4 py-3 text-xs text-latte">
+              <b className="text-espresso">Demo data</b> is saved in this browser only.
+              <button onClick={async () => { if (confirm('Put the demo back to its starting sample data? You will be signed out.')) { await resetDemo(); window.location.reload() } }} className="mt-1 block font-semibold text-terra hover:underline">Reset demo data</button>
+            </div>
+          )}
           <div className={`flex items-center gap-3 rounded-3xl p-3 transition ${tab === 'profile' ? 'bg-espresso text-cream' : 'bg-cream'}`}>
             <button onClick={() => { setTab('profile'); setNavOpen(false) }} aria-label="My profile" className="flex min-w-0 flex-1 items-center gap-3 text-left">
               <Avatar name={user.name} src={user.avatar} size={40} />

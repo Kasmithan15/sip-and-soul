@@ -1,3 +1,5 @@
+import { DEMO, demoApi } from './demoApi'
+
 /** Error from the server, with per-field messages when a form failed validation. */
 export class ApiError extends Error {
   readonly status: number
@@ -12,6 +14,8 @@ export class ApiError extends Error {
 const BASE = '/api'
 
 export async function api<T>(path: string, init: RequestInit & { json?: unknown } = {}): Promise<T> {
+  // Copies without a café server (GitHub Pages) answer everything in the browser instead.
+  if (DEMO) return demoApi<T>(path, init)
   const { json, headers, ...rest } = init
   let res: Response
   try {

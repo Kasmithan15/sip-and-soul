@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { api, ApiError } from '../../lib/api'
 import type { User } from '../../lib/types'
 import { hasErrors, passwordStrength, rules } from '../../lib/validate'
+import { DEMO, DEMO_ADMIN } from '../../lib/demoApi'
 import { useStore } from '../../state/store'
 import { Alert, Field, Modal, PasswordField, Submit } from './ui'
 
@@ -65,6 +66,12 @@ export function AuthPanel({ mode, onClose }: { mode: 'login' | 'register'; onClo
   return (
     <Modal title={register ? 'Create your account' : 'Welcome back'} onClose={onClose ?? (() => openPanel(null))}>
       {!online && <Alert tone="info">Accounts and online ordering need the café server. This copy of the site is a preview only.</Alert>}
+      {DEMO && !register && (
+        <Alert tone="info">
+          <b>Demo version.</b> Everything works, and your changes are saved in this browser only.<br />
+          Admin demo login: <b>{DEMO_ADMIN.email}</b> · <b>{DEMO_ADMIN.password}</b>
+        </Alert>
+      )}
       <p className="mb-5 text-sm text-latte">
         {register ? 'Order ahead, track your coffee and save your details for next time.' : 'Customers and café staff both sign in here.'}
       </p>
