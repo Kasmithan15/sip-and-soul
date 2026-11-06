@@ -28,7 +28,7 @@ export function CupSection() {
 
   return (
     <section ref={section} aria-labelledby="cup-title" className={`relative bg-[radial-gradient(ellipse_at_50%_60%,#f7efe6,#efe2d3_60%,#e6d4c1)] ${rich ? 'h-[220vh]' : 'py-20'}`}>
-      <div className={`${rich ? 'sticky top-0 h-svh' : ''} overflow-hidden`}>
+      <div className={`${rich ? 'sticky top-0 h-svh' : 'relative'} overflow-hidden`}>
         {DROPS.map((d, i) => (
           <span
             key={i}

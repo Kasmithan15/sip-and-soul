@@ -10,7 +10,7 @@ export function Pour() {
 
   return (
     <section id="pour" ref={section} aria-labelledby="pour-title" className={`relative bg-cream ${rich ? 'h-[240vh]' : 'py-20'}`}>
-      <div className={`${rich ? 'sticky top-0 h-svh' : ''} overflow-hidden`}>
+      <div className={`${rich ? 'sticky top-0 h-svh' : 'relative'} overflow-hidden`}>
         <div className="relative mx-auto h-full max-w-7xl px-5 sm:px-8">
           {/* terracotta arch behind the counter */}
           <div aria-hidden className="absolute bottom-[10%] left-1/2 h-[52%] w-[min(560px,78vw)] md:h-[70%] -translate-x-1/2 rounded-t-full bg-[linear-gradient(180deg,#cf7449,#c0623b_45%,#a9512f)] shadow-[inset_0_-40px_80px_rgba(0,0,0,.12)]" />

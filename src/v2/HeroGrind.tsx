@@ -32,7 +32,7 @@ export function HeroGrind() {
 
   return (
     <section id="top" ref={section} aria-labelledby="grind-title" className={`relative ${rich ? 'h-[230vh]' : ''}`}>
-      <div className={`${rich ? 'sticky top-0 h-svh' : 'pt-28 pb-10'} overflow-hidden`}>
+      <div className={`${rich ? 'sticky top-0 h-svh' : 'relative pt-28 pb-10'} overflow-hidden`}>
         {/* the giant faded word */}
         <div
           ref={word}

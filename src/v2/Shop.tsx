@@ -90,7 +90,7 @@ export function FindYourCup() {
           ))}
         </div>
         <div className="mt-2 flex justify-center gap-2 lg:hidden">
-          {CARDS.map((c, i) => <button key={c.title} aria-label={`Show ${c.title}`} aria-current={i === active} onClick={() => go(i)} className={`h-2 rounded-full transition-all ${i === active ? 'w-7 bg-espresso' : 'w-2 bg-espresso/25'}`} />)}
+          {CARDS.map((c, i) => <button key={c.title} aria-label={`Show ${c.title}`} aria-current={i === active} onClick={() => go(i)} className="grid h-11 min-w-8 place-items-center"><span className={`block h-2 rounded-full transition-all ${i === active ? 'w-7 bg-espresso' : 'w-2 bg-espresso/25'}`} /></button>)}
         </div>
       </div>
     </section>

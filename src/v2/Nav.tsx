@@ -31,7 +31,7 @@ export function Nav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8">
         <Logo />
         <nav aria-label="Main" className="hidden items-center gap-8 text-[15px] font-medium text-espresso md:flex">
-          {links.map((l) => <a key={l.label} href={l.href} className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-terra after:transition-transform hover:after:scale-x-100">{l.label}</a>)}
+          {links.map((l) => <a key={l.label} href={l.href} className="relative py-2 after:absolute after:bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-terra after:transition-transform hover:after:scale-x-100">{l.label}</a>)}
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
           <button aria-label={`Cart, ${cartCount} items`} onClick={() => openPanel('cart')} className="relative grid size-11 place-items-center rounded-full text-espresso transition hover:bg-sand/50">

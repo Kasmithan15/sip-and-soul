@@ -81,7 +81,7 @@ export function VisitUs() {
           <dl data-reveal className="mt-8 grid gap-5 text-[16px]">
             <div><dt className="text-sm text-latte">Address</dt><dd className="mt-1 font-semibold">{contact.address || 'Address coming soon'}</dd></div>
             <div><dt className="text-sm text-latte">Opening hours</dt><dd className="mt-1 font-semibold">{contact.hours || 'Call us for today’s opening hours'}</dd></div>
-            <div><dt className="text-sm text-latte">Contact</dt><dd className="mt-1 grid gap-1 font-semibold"><a href={tel} className="hover:text-terra">{contact.phone}</a><a href={`mailto:${contact.email}`} className="hover:text-terra">{contact.email}</a></dd></div>
+            <div><dt className="text-sm text-latte">Contact</dt><dd className="mt-1 grid font-semibold"><a href={tel} className="py-2 hover:text-terra">{contact.phone}</a><a href={`mailto:${contact.email}`} className="py-2 hover:text-terra">{contact.email}</a></dd></div>
           </dl>
           <div data-reveal className="mt-8 flex flex-wrap gap-3">
             {contact.address && <a href={`https://www.google.com/maps/dir/?api=1&destination=${q}`} target="_blank" rel="noopener noreferrer" className="rounded-full bg-espresso px-6 py-3.5 text-sm font-semibold text-cream transition hover:scale-[1.04]">Get directions →</a>}
@@ -269,8 +269,8 @@ export function SiteFooter() {
         </div>
         <div>
           <h3 className="text-sm font-semibold tracking-[.2em] text-gold">CONTACT</h3>
-          <a href={tel} className="mt-4 flex items-center gap-2 text-cream/85 hover:text-gold"><PhoneIcon className="size-4" />{contact.phone}</a>
-          <a href={`mailto:${contact.email}`} className="mt-2 flex items-center gap-2 text-cream/85 hover:text-gold"><MailIcon className="size-4" />{contact.email}</a>
+          <a href={tel} className="mt-3 flex items-center gap-2 py-2 text-cream/85 hover:text-gold"><PhoneIcon className="size-4" />{contact.phone}</a>
+          <a href={`mailto:${contact.email}`} className="flex items-center gap-2 py-2 text-cream/85 hover:text-gold"><MailIcon className="size-4" />{contact.email}</a>
           <div className="mt-6 flex gap-3">
             {[['Instagram', InstagramIcon], ['Facebook', FacebookIcon], ['YouTube', YoutubeIcon]].map(([label, Icon]) => {
               const I = Icon as typeof InstagramIcon
@@ -283,7 +283,7 @@ export function SiteFooter() {
         <p className="text-cream/55">© {year} Sip &amp; Soul Café. All rights reserved.</p>
         <p className="flex items-center gap-2 text-cream/70">
           Designed &amp; developed by
-          <a href={company.website} target="_blank" rel="noopener noreferrer" aria-label={`${company.name} website`} className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 transition hover:-translate-y-0.5">
+          <a href={company.website} target="_blank" rel="noopener noreferrer" aria-label={`${company.name} website`} className="flex min-h-9 items-center gap-1.5 rounded-full bg-white px-3 py-2 transition hover:-translate-y-0.5">
             <img src="images/neirah-icon.png" alt="" className="h-4 w-auto" /><img src="images/neirah-wordmark.png" alt={company.name} className="h-2.5 w-auto" />
           </a>
         </p>

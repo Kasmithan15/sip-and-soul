@@ -49,7 +49,8 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; }
+  /* clip (not hidden) so phones can't scroll sideways, without breaking the pinned scroll scenes */
+  html { scroll-behavior: smooth; overflow-x: clip; }
   body { @apply bg-cream font-sans text-brown overflow-x-hidden; }
   button { cursor: pointer; }
 }
