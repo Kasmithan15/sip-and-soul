@@ -6,7 +6,7 @@ import { PourScene } from './three/PourScene'
 export function Pour() {
   const section = useRef<HTMLElement>(null)
   const rich = useRichMotion()
-  const progress = useScrollProgress(section, { start: 'top top', end: 'bottom bottom', enabled: rich, still: 0.6 })
+  const progress = useScrollProgress(section, { start: 'top top', end: 'bottom bottom', enabled: rich, still: 0.6, mobileStart: 'top 65%', mobileEnd: 'bottom 70%' })
 
   return (
     <section id="pour" ref={section} aria-labelledby="pour-title" className={`relative bg-cream ${rich ? 'h-[240vh]' : 'py-20'}`}>

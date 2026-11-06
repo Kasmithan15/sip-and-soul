@@ -45,14 +45,42 @@ export function useSmoothScroll() {
 }
 
 /** A number from 0 to 1 that follows how far a section has been scrolled, for the 3D scenes to read every frame. */
-export function useScrollProgress(target: React.RefObject<HTMLElement | null>, opts: { start?: string; end?: string; pin?: boolean; enabled?: boolean; /** Where the scene rests on phones and with reduced motion. */ still?: number }) {
-  const progress = useRef(0)
-  const { start = 'top top', end = 'bottom bottom', pin = false, enabled = true, still = 1 } = opts
+/** True when the visitor has asked their device for less motion. */
+export function useReducedMotion() {
+  const [reduced, setReduced] = useState(() => window.matchMedia(reduceQuery).matches)
   useEffect(() => {
-    if (!target.current || !enabled) { progress.current = enabled ? 0 : still; return }
-    const st = ScrollTrigger.create({ trigger: target.current, start, end, pin, scrub: true, onUpdate: (self) => { progress.current = self.progress } })
+    const mq = window.matchMedia(reduceQuery), on = () => setReduced(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  return reduced
+}
+
+/**
+ * A number from 0 to 1 that the 3D scenes read every frame.
+ * - Desktop (`enabled`): follows the scroll through the pinned section (`start` → `end`).
+ * - Phones: follows the section as it passes through the screen (`mobileStart` → `mobileEnd`), no pinning,
+ *   so the phone layout stays the same but the scene still plays.
+ * - Reduced motion: rests at `still`.
+ */
+export function useScrollProgress(target: React.RefObject<HTMLElement | null>, opts: { start?: string; end?: string; pin?: boolean; enabled?: boolean; still?: number; mobileStart?: string; mobileEnd?: string }) {
+  const progress = useRef(0)
+  const reduced = useReducedMotion()
+  const { start = 'top top', end = 'bottom bottom', pin = false, enabled = true, still = 1, mobileStart = 'top 70%', mobileEnd = 'bottom 40%' } = opts
+  useEffect(() => {
+    if (!target.current) return
+    if (reduced) { progress.current = still; return }
+    const st = ScrollTrigger.create({
+      trigger: target.current,
+      start: enabled ? start : mobileStart,
+      end: enabled ? end : mobileEnd,
+      pin: enabled && pin,
+      scrub: true,
+      onUpdate: (self) => { progress.current = self.progress },
+    })
+    progress.current = st.progress
     return () => st.kill()
-  }, [target, start, end, pin, enabled, still])
+  }, [target, start, end, pin, enabled, still, mobileStart, mobileEnd, reduced])
   return progress
 }
 

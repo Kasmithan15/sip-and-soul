@@ -1,18 +1,19 @@
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { gsap, useRichMotion, useScrollProgress } from './motion'
+import { gsap, useReducedMotion, useRichMotion, useScrollProgress } from './motion'
 import { GrinderScene } from './three/GrinderScene'
 
 export function HeroGrind() {
   const section = useRef<HTMLElement>(null)
   const rich = useRichMotion()
-  const progress = useScrollProgress(section, { start: 'top top', end: 'bottom bottom', enabled: rich, still: 0 })
+  const progress = useScrollProgress(section, { start: 'top top', end: 'bottom bottom', enabled: rich, still: 0, mobileStart: 'top top', mobileEnd: 'bottom 30%' })
   const [opened, setOpened] = useState(false)
   const word = useRef<HTMLDivElement>(null)
 
   // Show the "Explore" tag once the grinder has come apart, and let the giant word drift.
+  const reduced = useReducedMotion()
   useEffect(() => {
-    if (!rich) return
+    if (reduced) return
     let raf = 0
     const loop = () => {
       setOpened(progress.current > 0.45)
@@ -21,7 +22,7 @@ export function HeroGrind() {
     }
     raf = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf)
-  }, [rich, progress])
+  }, [reduced, progress])
 
   useEffect(() => {
     const ctx = gsap.context(() => {

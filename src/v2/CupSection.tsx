@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useRef } from 'react'
-import { gsap, useRichMotion, useScrollProgress } from './motion'
+import { gsap, useReducedMotion, useRichMotion, useScrollProgress } from './motion'
 import { CupScene } from './three/CupScene'
 
 // Blurred coffee drops at three depths; nearer ones move faster for parallax.
@@ -13,10 +13,11 @@ const DROPS = [
 export function CupSection() {
   const section = useRef<HTMLElement>(null)
   const rich = useRichMotion()
-  const progress = useScrollProgress(section, { start: 'top top', end: 'bottom bottom', enabled: rich })
+  const progress = useScrollProgress(section, { start: 'top top', end: 'bottom bottom', enabled: rich, mobileStart: 'top 55%', mobileEnd: 'bottom 75%' })
 
+  const reduced = useReducedMotion()
   useEffect(() => {
-    if (!rich || !section.current) return
+    if (reduced || !section.current) return
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>('[data-drop]').forEach((el) => {
         gsap.to(el, { yPercent: -120 * Number(el.dataset.drop), ease: 'none', scrollTrigger: { trigger: section.current, start: 'top bottom', end: 'bottom top', scrub: true } })
@@ -24,7 +25,7 @@ export function CupSection() {
       gsap.fromTo('[data-cup-title]', { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: section.current, start: 'top 60%', end: 'top top', scrub: true } })
     }, section)
     return () => ctx.revert()
-  }, [rich])
+  }, [reduced])
 
   return (
     <section ref={section} aria-labelledby="cup-title" className={`relative bg-[radial-gradient(ellipse_at_50%_60%,#f7efe6,#efe2d3_60%,#e6d4c1)] ${rich ? 'h-[220vh]' : 'py-20'}`}>
