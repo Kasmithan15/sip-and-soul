@@ -30,7 +30,7 @@ export const defaultSite: SiteContent = {
   ],
   cta: { eyebrow: 'READY FOR A BETTER COFFEE EXPERIENCE?', title: 'Your Perfect Cup Awaits' },
   visit: { eyebrow: 'VISIT US', title: 'Come in, slow down' },
-  contact: { phone: '+94 76 004 1594', email: 'info@neirahtech.com', address: '', hours: '' },
+  contact: { phone: '+94 76 004 1594', email: 'info@neirahtech.com', address: 'No2, Kaduwela Road, Malabe, Colombo', hours: 'Open 24 hours' },
   reviews: [],
 }
 

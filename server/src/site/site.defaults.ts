@@ -35,8 +35,8 @@ export const siteDefaults = {
   contact: {
     phone: '+94 76 004 1594',
     email: 'info@neirahtech.com',
-    address: '',
-    hours: '',
+    address: 'No2, Kaduwela Road, Malabe, Colombo',
+    hours: 'Open 24 hours',
   },
   // Real guest reviews, added by the admin. The section stays hidden while this is empty.
   reviews: [] as { name: string; text: string; rating: number }[],
