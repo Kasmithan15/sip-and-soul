@@ -98,6 +98,7 @@ export function FindYourCup() {
 }
 
 const FILTERS: { id: 'all' | Category; label: string }[] = [{ id: 'all', label: 'All' }, { id: 'hot', label: 'Hot' }, { id: 'cold', label: 'Cold' }, { id: 'beans', label: 'Beans' }]
+const CATEGORY_LABEL: Record<Category, string> = { hot: 'Hot', cold: 'Cold', beans: 'Beans' }
 
 export function MenuSection() {
   const { menu, money, addToCart, openPanel, cartCount } = useStore()
@@ -108,36 +109,57 @@ export function MenuSection() {
   return (
     <section id="menu" aria-labelledby="menu-title" className="bg-cream-2/60 py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="grid gap-8 border-b border-espresso/10 pb-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <p data-reveal className="text-sm font-semibold tracking-[.3em] text-terra">THE MENU</p>
             <h2 id="menu-title" data-reveal className="mt-2 font-display text-5xl font-[900] tracking-tight md:text-6xl">Made to order</h2>
+            <p data-reveal className="mt-3 max-w-md text-[15px] leading-relaxed text-latte">Every drink is pulled fresh when you order, with beans we roast in small batches each week.</p>
           </div>
-          <div role="tablist" aria-label="Filter the menu" className="flex gap-1 rounded-full bg-sand/60 p-1">
-            {FILTERS.map((f) => (
-              <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => setFilter(f.id)} className={`rounded-full px-5 py-2.5 text-sm font-semibold transition ${filter === f.id ? 'bg-espresso text-cream' : 'text-espresso hover:bg-cream/70'}`}>{f.label}</button>
-            ))}
+          <div role="tablist" aria-label="Filter the menu" className="-mx-5 flex gap-2 overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:px-0">
+            {FILTERS.map((f) => {
+              const count = f.id === 'all' ? menu.length : menu.filter((m) => m.category === f.id).length
+              const on = filter === f.id
+              return (
+                <button key={f.id} role="tab" aria-selected={on} onClick={() => setFilter(f.id)} className={`flex shrink-0 items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition ${on ? 'border-espresso bg-espresso text-cream' : 'border-espresso/15 bg-white/60 text-espresso hover:border-espresso/40'}`}>
+                  {f.label}<span className={`text-xs tabular-nums ${on ? 'text-cream/60' : 'text-latte'}`}>{count}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
-        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((m) => (
-            <li key={m.id} className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-[0_10px_30px_rgba(43,29,22,.06)] transition duration-500 hover:-translate-y-2 hover:shadow-[0_26px_50px_rgba(43,29,22,.14)]">
-              <div className="aspect-square overflow-hidden"><img src={m.image} alt={m.name} loading="lazy" className="size-full object-cover transition duration-700 group-hover:scale-105" /></div>
-              <div className="flex flex-1 flex-col p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-display text-xl font-[800]">{m.name}</h3>
-                  <span className="shrink-0 font-semibold text-terra">{money(m.price)}</span>
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+          {items.map((m) => {
+            const isAdded = added === m.id
+            const add = () => { addToCart(m); setAdded(m.id); setTimeout(() => setAdded((a) => (a === m.id ? null : a)), 1200) }
+            return (
+              <li key={m.id} className="group grid grid-cols-[104px_1fr] overflow-hidden rounded-2xl bg-white ring-1 ring-espresso/[.06] shadow-[0_8px_24px_rgba(43,29,22,.05)] transition duration-500 sm:flex sm:flex-col sm:rounded-3xl sm:hover:-translate-y-1.5 sm:hover:shadow-[0_24px_48px_rgba(43,29,22,.12)]">
+                <div className="relative overflow-hidden sm:aspect-[4/3.4]">
+                  <img src={m.image} alt={m.name} loading="lazy" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-x-0 top-0 hidden items-start justify-between p-3 sm:flex">
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-[.14em] text-espresso uppercase backdrop-blur">{CATEGORY_LABEL[m.category]}</span>
+                    {m.featured && <span className="rounded-full bg-terra px-3 py-1 text-[11px] font-semibold tracking-[.14em] text-white uppercase">Signature</span>}
+                  </div>
                 </div>
-                <p className="mt-1 flex-1 text-sm text-latte">{m.description}</p>
-                <button
-                  onClick={() => { addToCart(m); setAdded(m.id); setTimeout(() => setAdded((a) => (a === m.id ? null : a)), 1200) }}
-                  className={`mt-4 rounded-full px-5 py-2.5 text-sm font-semibold transition hover:scale-[1.03] ${added === m.id ? 'bg-terra text-white' : 'bg-espresso text-cream'}`}
-                >
-                  {added === m.id ? 'Added ✓' : 'Add to order'}
-                </button>
-              </div>
-            </li>
-          ))}
+                <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
+                  <p className="text-[11px] font-semibold tracking-[.16em] text-terra uppercase sm:hidden">{CATEGORY_LABEL[m.category]}{m.featured && ' · Signature'}</p>
+                  <h3 className="font-display text-lg leading-snug font-[800] sm:text-xl">{m.name}</h3>
+                  <p className="mt-1 line-clamp-2 flex-1 text-sm leading-relaxed text-latte">{m.description}</p>
+                  <div className="mt-3 flex items-center justify-between gap-3 sm:mt-5 sm:border-t sm:border-dashed sm:border-espresso/15 sm:pt-4">
+                    <span className="font-display text-xl font-[800] tabular-nums">{money(m.price)}</span>
+                    <button
+                      onClick={add}
+                      aria-label={isAdded ? `${m.name} added to your order` : `Add ${m.name} to your order`}
+                      className={`flex h-11 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition hover:scale-[1.04] ${isAdded ? 'bg-terra text-white' : 'bg-espresso text-cream'}`}
+                    >
+                      {isAdded
+                        ? <><svg aria-hidden viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m4.5 10.5 3.5 3.5 7.5-8" /></svg>Added</>
+                        : <><svg aria-hidden viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M10 4v12M4 10h12" /></svg>Add</>}
+                    </button>
+                  </div>
+                </div>
+              </li>
+            )
+          })}
           {!items.length && <li className="col-span-full py-10 text-center text-latte">Nothing here yet. Check back soon.</li>}
         </ul>
         {cartCount > 0 && (
