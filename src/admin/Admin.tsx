@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Password, Profile } from '../components/shop/AccountPanel'
 import { AuthPanel } from '../components/shop/AuthPanel'
 import { Avatar } from '../components/shop/ui'
+import { Logo } from '../v2/Brand'
 import { Panels } from '../components/shop/Panels'
 import { useStore } from '../state/store'
 import { CustomersAdmin } from './CustomersAdmin'
@@ -21,15 +22,6 @@ const TABS = [
   { id: 'profile', label: 'My profile', note: 'Your photo, details and password' },
 ] as const
 export type Tab = (typeof TABS)[number]['id']
-
-/** "SIP / SOUL" wordmark, the same as the website's. */
-function AdminLogo() {
-  return (
-    <a href="#top" className="flex items-baseline gap-1.5 font-display text-[22px] leading-none font-[800] tracking-tight text-espresso">
-      SIP<span className="mx-0.5 inline-block h-6 w-px rotate-[20deg] bg-current opacity-60" />SOUL
-    </a>
-  )
-}
 
 const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening' }
 
@@ -67,7 +59,7 @@ export default function Admin() {
   return (
     <div className="min-h-svh bg-cream text-espresso lg:grid lg:grid-cols-[272px_1fr]">
       <aside className={`fixed inset-y-0 left-0 z-40 flex w-[272px] flex-col bg-cream-2 transition-transform lg:sticky lg:top-0 lg:h-svh lg:translate-x-0 ${navOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
-        <div className="px-7 pt-8 pb-6"><AdminLogo /><p className="mt-2 text-xs text-latte">Sip &amp; Soul Café</p></div>
+        <div className="px-7 pt-8 pb-7"><Logo size="sm" /></div>
         <nav aria-label="Admin" className="grid gap-1.5 px-4">
           {TABS.filter((t) => t.id !== 'profile').map((t) => (
             <button

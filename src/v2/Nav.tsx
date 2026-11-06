@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { CartIcon } from '../components/Icons'
 import { Avatar } from '../components/shop/ui'
 import { useStore } from '../state/store'
+import { Logo } from './Brand'
+
+export { Logo }
 
 const links = [
   { label: 'Home', href: '#top' },
@@ -9,15 +12,6 @@ const links = [
   { label: 'Menu', href: '#menu' },
   { label: 'Visit', href: '#visit' },
 ]
-
-export function Logo({ light }: { light?: boolean }) {
-  return (
-    <a href="#top" aria-label="Sip & Soul Café, home" className={`group flex items-baseline gap-1.5 font-display text-[22px] leading-none font-[800] tracking-tight ${light ? 'text-cream' : 'text-espresso'}`}>
-      SIP<span className="mx-0.5 inline-block h-6 w-px origin-bottom rotate-[20deg] bg-current opacity-60 transition-transform group-hover:rotate-[35deg]" />SOUL
-      <span className="ml-1 font-sans text-[9px] font-semibold tracking-[.35em] opacity-60">CAFÉ</span>
-    </a>
-  )
-}
 
 export function Nav() {
   const { user, openPanel, cartCount } = useStore()
